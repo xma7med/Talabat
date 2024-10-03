@@ -19,7 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{4F3F7F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dashboard", "Dashboard", "{AF11B7F9-47AE-4CEC-BB89-C4A66F61D92B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinkDev.Talabat.APIs", "LinkDev.Talabat.APIs\LinkDev.Talabat.APIs.csproj", "{931E6EAA-2323-4326-ABDA-7D12536EFF24}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LinkDev.Talabat.APIs", "LinkDev.Talabat.APIs\LinkDev.Talabat.APIs.csproj", "{931E6EAA-2323-4326-ABDA-7D12536EFF24}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
