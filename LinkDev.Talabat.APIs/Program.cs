@@ -1,4 +1,8 @@
 
+using LinkDev.Talabat.Infrastructure.Presistance;
+using LinkDev.Talabat.Infrastructure.Presistance.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace LinkDev.Talabat.APIs
 {
 	public class Program
@@ -16,6 +20,11 @@ namespace LinkDev.Talabat.APIs
 			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 			webApplicationbuilder.Services.AddEndpointsApiExplorer();
 			webApplicationbuilder.Services.AddSwaggerGen();
+
+
+			// Register Required services for Presistance layer 
+			webApplicationbuilder.Services.AddPresistanceServices(webApplicationbuilder.Configuration);	// first way
+			//DependencyInjection.AddPresistanceServices(webApplicationbuilder.Services , webApplicationbuilder.Configuration);	// traditional way 
 
 
 			#endregion
