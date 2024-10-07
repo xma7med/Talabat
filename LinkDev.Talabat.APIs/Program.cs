@@ -33,19 +33,15 @@ namespace LinkDev.Talabat.APIs
 			var app = webApplicationbuilder.Build();
 
 
-			#region Update DataBase
+			#region Update DataBase & Data Seed 
 
 			using var scope = app.Services.CreateAsyncScope(); // Create Request
 			var service = scope.ServiceProvider;
 			var dbcontext = service.GetRequiredService<StoreContext>();
 			// Ask Run Time Enviroment for an object from "StoreContext" Services Explictly .
-
-
+			//***********************************************************************************
 			var loggerfactory = service.GetRequiredService<ILoggerFactory>();
-
 			//var logger = service.GetRequiredService<ILogger<Program>>();
-
-
 			try
 			{
 				var pendingMigrations = dbcontext.Database.GetPendingMigrations();
@@ -53,13 +49,17 @@ namespace LinkDev.Talabat.APIs
 				if (pendingMigrations.Any())
 					await dbcontext.Database.MigrateAsync(); // Update-DataBase
 
+				//******************************************************************
+				// Data seed
 
+				await StoreContextSeed.SeedAsync(dbcontext);
+				
 			}
 			catch (Exception ex)
 			{
 
 				var logger = loggerfactory.CreateLogger<Program>();
-				logger.LogError(ex, "an error has been occured during applying the migration ");
+				logger.LogError(ex, "an error has been occured during applying the migration  or the data seed");
 			}
 
 
