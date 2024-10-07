@@ -6,7 +6,7 @@ using System.Collections.Concurrent;
 
 namespace LinkDev.Talabat.Infrastructure.Presistance.UnitOfWork
 {
-	public class UnitOfWork : IUnitOfWork
+	public class UnitOfWork : IUnitOfWork 
 	{
 		private readonly StoreContext _dbContext;
 
