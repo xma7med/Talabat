@@ -1,20 +1,86 @@
 
+using LinkDev.Talabat.APIs.Extention;
+using LinkDev.Talabat.Core.Domain.Contracts;
+using LinkDev.Talabat.Infrastructure.Presistance;
+using LinkDev.Talabat.Infrastructure.Presistance.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace LinkDev.Talabat.APIs
 {
 	public class Program
 	{
-		public static void Main(string[] args)
+		public static async Task Main(string[] args)
 		{
-			var builder = WebApplication.CreateBuilder(args);
 
+			/// the builder to build ASP.NET Core App
+			var webApplicationbuilder = WebApplication.CreateBuilder(args);
+
+			#region Confgure Services 
 			// Add services to the container.
 
-			builder.Services.AddControllers();
+			webApplicationbuilder.Services.AddControllers();  // Register Required Services by ASP.NET Core --> Web APIs To DI Container 
 			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-			builder.Services.AddEndpointsApiExplorer();
-			builder.Services.AddSwaggerGen();
+			webApplicationbuilder.Services.AddEndpointsApiExplorer();
+			webApplicationbuilder.Services.AddSwaggerGen();
 
-			var app = builder.Build();
+
+			// Register Required services for Presistance layer 
+			webApplicationbuilder.Services.AddPresistanceServices(webApplicationbuilder.Configuration);	// first way
+			//DependencyInjection.AddPresistanceServices(webApplicationbuilder.Services , webApplicationbuilder.Configuration);	// traditional way 
+
+
+			#endregion
+
+
+			var app = webApplicationbuilder.Build();
+
+
+			#region DataBase Initializer
+
+			#region Update DataBase & Data Seed -- Canceled -->  Done Refactor  
+			//using var scope = app.Services.CreateAsyncScope(); // Create Request
+			//var service = scope.ServiceProvider;
+			//var storeContextInitializer/*dbcontext*/ = service.GetRequiredService<IStoreContextIntializer/*StoreContext*/>();
+			//// Ask Run Time Enviroment for an object from "StoreContext" Services Explictly .
+			////***********************************************************************************
+			//var loggerfactory = service.GetRequiredService<ILoggerFactory>();
+			////var logger = service.GetRequiredService<ILogger<Program>>();
+			//try
+			//{
+			//	/// Refactor Done 1
+			//	/// var pendingMigrations = dbcontext.Database.GetPendingMigrations();
+			//	///
+			//	///if (pendingMigrations.Any())
+			//	///	await dbcontext.Database.MigrateAsync(); // Update-DataBase
+			//	///
+			//	/// //******************************************************************
+			//	///  // Data seed
+			//	///
+			//	///await StoreContextSeed.SeedAsync(dbcontext);
+
+			// Refactor 2 
+			//	await storeContextInitializer.InitializeAsync();	
+			//	await storeContextInitializer.SeedAsync();
+
+
+
+			//}
+			//catch (Exception ex)
+			//{
+
+			//	var logger = loggerfactory.CreateLogger<Program>();
+			//	logger.LogError(ex, "an error has been occured during applying the migration  or the data seed");
+			//} 
+			#endregion
+
+			// Add Db Initializer & Seed into extention method to WebApplicationBuilder
+			await app.InitializeStoreContextAsync();
+
+
+
+			#endregion
+
+			#region Configure Kestral Middlewares
 
 			// Configure the HTTP request pipeline.
 			if (app.Environment.IsDevelopment())
@@ -25,12 +91,14 @@ namespace LinkDev.Talabat.APIs
 
 			app.UseHttpsRedirection();
 
-			app.UseAuthorization();
+			//app.UseAuthorization();
 
 
-			app.MapControllers();
+			app.MapControllers(); 
+			#endregion
 
 			app.Run();
+
 		}
 	}
 }
