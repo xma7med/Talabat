@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LinkDev.Talabat.Core.Domain.Contracts
 {
-	public interface IGenaricRepository <TEntity , TKey> 
+	public interface IGenericRepository <TEntity , TKey> 
 		where TEntity:BaseEntity<TKey> 
 		where TKey:IEquatable<TKey>
 	{

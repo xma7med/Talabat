@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace LinkDev.Talabat.Core.Domain.Common
 {
-	public class BaseEntity<TKey> where TKey : IEquatable<TKey>	
+	public class BaseEntity<TKey> where TKey : IEquatable<TKey>  // TKey : To make Id genaric Each Entity Specify their own type
+																 // IEquatable<TKey> to enable Eqality for Genaric repo in GetById & Find need id to be eqautable 
 	{
 		public required TKey Id { get; set; }
 
