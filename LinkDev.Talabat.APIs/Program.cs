@@ -37,9 +37,7 @@ namespace LinkDev.Talabat.APIs
 
 			#region DataBase Initializer
 
-			await app.InitializeStoreContextAsync();
-
-			#region Update DataBase & Data Seed 
+			#region Update DataBase & Data Seed -- Canceled -->  Done Refactor  
 			//using var scope = app.Services.CreateAsyncScope(); // Create Request
 			//var service = scope.ServiceProvider;
 			//var storeContextInitializer/*dbcontext*/ = service.GetRequiredService<IStoreContextIntializer/*StoreContext*/>();
@@ -49,7 +47,7 @@ namespace LinkDev.Talabat.APIs
 			////var logger = service.GetRequiredService<ILogger<Program>>();
 			//try
 			//{
-			//	/// Refactor Done 
+			//	/// Refactor Done 1
 			//	/// var pendingMigrations = dbcontext.Database.GetPendingMigrations();
 			//	///
 			//	///if (pendingMigrations.Any())
@@ -60,7 +58,7 @@ namespace LinkDev.Talabat.APIs
 			//	///
 			//	///await StoreContextSeed.SeedAsync(dbcontext);
 
-
+			// Refactor 2 
 			//	await storeContextInitializer.InitializeAsync();	
 			//	await storeContextInitializer.SeedAsync();
 
@@ -74,6 +72,10 @@ namespace LinkDev.Talabat.APIs
 			//	logger.LogError(ex, "an error has been occured during applying the migration  or the data seed");
 			//} 
 			#endregion
+
+			// Add Db Initializer & Seed into extention method to WebApplicationBuilder
+			await app.InitializeStoreContextAsync();
+
 
 
 			#endregion

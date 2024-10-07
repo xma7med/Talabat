@@ -26,7 +26,7 @@ namespace LinkDev.Talabat.Infrastructure.Presistance.Data
 				await _dbContext.Database.MigrateAsync(); // Update-DataBase
 		}
 
-		public async Task SeedAsync()
+		public async Task SeedAsync() // Seeds
 		{
 			if (!_dbContext.Brands.Any()) // check if table is empty first 
 			{

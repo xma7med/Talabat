@@ -9,6 +9,7 @@ namespace LinkDev.Talabat.APIs.Extention
 			// Ask Run Time Enviroment for an object from "StoreContext" Services Explictly .
 			using var scope = app.Services.CreateAsyncScope(); // Create Request
 			var service = scope.ServiceProvider;
+			// GetRequiredService for the classes implemnt this interface and have been registered in DI Container 
 			var storeContextInitializer/*dbcontext*/ = service.GetRequiredService<IStoreContextIntializer/*StoreContext*/>();
 
 			var loggerfactory = service.GetRequiredService<ILoggerFactory>();
