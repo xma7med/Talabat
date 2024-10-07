@@ -7,7 +7,7 @@ namespace LinkDev.Talabat.APIs
 {
 	public class Program
 	{
-		public static void Main(string[] args)
+		public static async Task Main(string[] args)
 		{
 
 			/// the builder to build ASP.NET Core App
@@ -32,6 +32,38 @@ namespace LinkDev.Talabat.APIs
 
 			var app = webApplicationbuilder.Build();
 
+
+			#region Update DataBase
+
+			using var scope = app.Services.CreateAsyncScope(); // Create Request
+			var service = scope.ServiceProvider;
+			var dbcontext = service.GetRequiredService<StoreContext>();
+			// Ask Run Time Enviroment for an object from "StoreContext" Services Explictly .
+
+
+			var loggerfactory = service.GetRequiredService<ILoggerFactory>();
+
+			//var logger = service.GetRequiredService<ILogger<Program>>();
+
+
+			try
+			{
+				var pendingMigrations = dbcontext.Database.GetPendingMigrations();
+
+				if (pendingMigrations.Any())
+					await dbcontext.Database.MigrateAsync(); // Update-DataBase
+
+
+			}
+			catch (Exception ex)
+			{
+
+				var logger = loggerfactory.CreateLogger<Program>();
+				logger.LogError(ex, "an error has been occured during applying the migration ");
+			}
+
+
+			#endregion
 
 			#region Configure Kestral Middlewares
 
