@@ -1,4 +1,6 @@
 
+using LinkDev.Talabat.APIs.Extention;
+using LinkDev.Talabat.Core.Domain.Contracts;
 using LinkDev.Talabat.Infrastructure.Presistance;
 using LinkDev.Talabat.Infrastructure.Presistance.Data;
 using Microsoft.EntityFrameworkCore;
@@ -33,34 +35,45 @@ namespace LinkDev.Talabat.APIs
 			var app = webApplicationbuilder.Build();
 
 
+			#region DataBase Initializer
+
+			await app.InitializeStoreContextAsync();
+
 			#region Update DataBase & Data Seed 
+			//using var scope = app.Services.CreateAsyncScope(); // Create Request
+			//var service = scope.ServiceProvider;
+			//var storeContextInitializer/*dbcontext*/ = service.GetRequiredService<IStoreContextIntializer/*StoreContext*/>();
+			//// Ask Run Time Enviroment for an object from "StoreContext" Services Explictly .
+			////***********************************************************************************
+			//var loggerfactory = service.GetRequiredService<ILoggerFactory>();
+			////var logger = service.GetRequiredService<ILogger<Program>>();
+			//try
+			//{
+			//	/// Refactor Done 
+			//	/// var pendingMigrations = dbcontext.Database.GetPendingMigrations();
+			//	///
+			//	///if (pendingMigrations.Any())
+			//	///	await dbcontext.Database.MigrateAsync(); // Update-DataBase
+			//	///
+			//	/// //******************************************************************
+			//	///  // Data seed
+			//	///
+			//	///await StoreContextSeed.SeedAsync(dbcontext);
 
-			using var scope = app.Services.CreateAsyncScope(); // Create Request
-			var service = scope.ServiceProvider;
-			var dbcontext = service.GetRequiredService<StoreContext>();
-			// Ask Run Time Enviroment for an object from "StoreContext" Services Explictly .
-			//***********************************************************************************
-			var loggerfactory = service.GetRequiredService<ILoggerFactory>();
-			//var logger = service.GetRequiredService<ILogger<Program>>();
-			try
-			{
-				var pendingMigrations = dbcontext.Database.GetPendingMigrations();
 
-				if (pendingMigrations.Any())
-					await dbcontext.Database.MigrateAsync(); // Update-DataBase
+			//	await storeContextInitializer.InitializeAsync();	
+			//	await storeContextInitializer.SeedAsync();
 
-				//******************************************************************
-				// Data seed
 
-				await StoreContextSeed.SeedAsync(dbcontext);
-				
-			}
-			catch (Exception ex)
-			{
 
-				var logger = loggerfactory.CreateLogger<Program>();
-				logger.LogError(ex, "an error has been occured during applying the migration  or the data seed");
-			}
+			//}
+			//catch (Exception ex)
+			//{
+
+			//	var logger = loggerfactory.CreateLogger<Program>();
+			//	logger.LogError(ex, "an error has been occured during applying the migration  or the data seed");
+			//} 
+			#endregion
 
 
 			#endregion
