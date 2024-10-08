@@ -17,19 +17,19 @@ namespace LinkDev.Talabat.Infrastructure.Presistance.Reositories
 
 	{
 		public async Task<IEnumerable<TEntity>> GetAllAsync(bool withTracking = false)
-			=> withTracking ? await DbContext.Set<TEntity>().ToListAsync() : await DbContext.Set<TEntity>().AsNoTracking().ToListAsync();
-		// ******** Fix This Enable Eager loading Day03 part 03 14:00
-		//{
-		//	if (typeof(TEntity) == typeof(Product))
-		//	{
-		//		withTracking? await DbContext.Set<Product>().Include(P => P.Brand).Include(P => P.Category).ToListAsync() :
-		//			await DbContext.Set<Product>().Include(P => P.Brand).Include(P => P.Category).AsNoTracking().ToListAsync();
+		//=> withTracking ? await DbContext.Set<TEntity>().ToListAsync() : await DbContext.Set<TEntity>().AsNoTracking().ToListAsync();
+		// ******** Fixed --> but da mosakn l2n msh by722 el [open for extention close for modification]
+		{
+			if (typeof(TEntity) == typeof(Product))
+			{
+				return withTracking? (IEnumerable<TEntity>) (await DbContext.Set<Product>().Include(P => P.Brand).Include(P => P.Category).ToListAsync() ):
+					(IEnumerable<TEntity>)(await DbContext.Set<Product>().Include(P => P.Brand).Include(P => P.Category).AsNoTracking().ToListAsync());
 
-		//	}
-		//	withTracking? await DbContext.Set<TEntity>().ToListAsync() :
-		//		await DbContext.Set<TEntity>().AsNoTracking().ToListAsync();
+			}
+			 return withTracking? await DbContext.Set<TEntity>().ToListAsync() :
+				await DbContext.Set<TEntity>().AsNoTracking().ToListAsync();
 
-		//}
+		}
 
 
 
@@ -40,21 +40,20 @@ namespace LinkDev.Talabat.Infrastructure.Presistance.Reositories
 		///}
 
 
-		// ******** Refactor This GetById Enable Eager loading Day03 part 03 14:00
-		public async Task<TEntity?> GetAsync(TKey id) => await DbContext.Set<TEntity>().FindAsync(id);
-		//{
-		//	if (typeof(TEntity) == typeof(Product))
+		// ********Fixed but this not Consider O in Solid The sol is Specification Design Pattern 
+		public async Task<TEntity?> GetAsync(TKey id) /*=> await DbContext.Set<TEntity>().FindAsync(id);*/ //1
+		{
+			if (typeof(TEntity) == typeof(Product))
 
-		//		// Return a product with its Brand and Category eagerly loaded
-		//		return await DbContext.Set<Product>()
-		//							  .Include(P => P.Brand)
-		//							  .Include(P => P.Category)
-		//							  .FirstOrDefaultAsync(P => P.Id==id) ;
-		//	   // For other entities, just use FindAsync (no eager loading)
-		//	    return await DbContext.Set<TEntity>().FindAsync(id);
+				// Return a product with its Brand and Category eagerly loaded
+				return await DbContext.Set<Product>().Where(P => P.Id.Equals(id))
+									  .Include(P => P.Brand)
+									  .Include(P => P.Category).FirstOrDefaultAsync() as TEntity;
+			// For other entities, just use FindAsync (no eager loading)
+			return await DbContext.Set<TEntity>().FindAsync(id);
 
 
-		//}
+		}
 
 
 
