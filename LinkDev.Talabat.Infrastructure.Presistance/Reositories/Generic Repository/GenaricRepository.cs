@@ -1,4 +1,5 @@
 ﻿using LinkDev.Talabat.Core.Domain.Common;
+using LinkDev.Talabat.Core.Domain.Contracts;
 using LinkDev.Talabat.Core.Domain.Contracts.Persistence;
 using LinkDev.Talabat.Core.Domain.Entities.Products;
 using LinkDev.Talabat.Infrastructure.Presistance.Data;
@@ -9,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LinkDev.Talabat.Infrastructure.Presistance.Reositories
+namespace LinkDev.Talabat.Infrastructure.Presistance.Reositories.Generic_Repository
 {
     internal class GenaricRepository<TEntity, TKey>(StoreContext DbContext) : IGenericRepository<TEntity, TKey>
 		where TEntity : BaseAuditableEntity<TKey>
@@ -56,6 +57,16 @@ namespace LinkDev.Talabat.Infrastructure.Presistance.Reositories
 		}
 
 
+		public async Task<IEnumerable<TEntity>> GetAllWithSpecAsync(ISpecifications<TEntity, TKey> spec, bool withTracking = false)
+		{//       -------------------------Qurery------------------------------------------------ .ToListAsync()
+			return await  /*SpecificationEvaluator<TEntity, TKey>.GetQuery(DbContext.Set<TEntity>() , spec)*/ApplySpecifications( spec).ToListAsync();
+		}
+		public async Task<TEntity?> GetWithSpecAsync(ISpecifications<TEntity, TKey> spec)
+		{
+			return await ApplySpecifications( spec).FirstOrDefaultAsync();		
+		}
+
+
 
 
 		public async Task AddAsync(TEntity entity) => await DbContext.Set<TEntity>().AddAsync(entity);
@@ -63,10 +74,19 @@ namespace LinkDev.Talabat.Infrastructure.Presistance.Reositories
 		public void Update(TEntity entity) =>DbContext.Set<TEntity>().Update(entity);
 		
 
-		public void Delete(TEntity entity) => 	DbContext.Set<TEntity>().Remove(entity);	
-		
+		public void Delete(TEntity entity) => 	DbContext.Set<TEntity>().Remove(entity);
 
-		
+
+		#region Helpers
+
+		private  IQueryable<TEntity> ApplySpecifications( ISpecifications<TEntity, TKey> spec)
+		{
+			return SpecificationEvaluator<TEntity, TKey>.GetQuery(DbContext.Set<TEntity>(), spec);
+		}
+
+
+		#endregion
+
 
 	}
 }
