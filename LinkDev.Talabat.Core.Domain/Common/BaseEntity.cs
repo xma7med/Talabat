@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LinkDev.Talabat.Core.Domain.Common
 {
-	public class BaseEntity<TKey>
+	public abstract class BaseEntity<TKey>
 		where TKey : IEquatable<TKey>  // TKey : To make Id genaric Each Entity Specify their own type
 
 	{
