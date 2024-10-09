@@ -1,6 +1,8 @@
 ﻿using LinkDev.Talabat.Core.Application.Abstraction;
+using LinkDev.Talabat.Core.Application.Abstraction.Services.Products;
 using LinkDev.Talabat.Core.Application.Mapping;
 using LinkDev.Talabat.Core.Application.Services;
+using LinkDev.Talabat.Core.Application.Services.Products;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace LinkDev.Talabat.Core.Application
@@ -12,11 +14,12 @@ namespace LinkDev.Talabat.Core.Application
 
 
 			services.AddAutoMapper(typeof(MappingProfile)); // 1
-															//services.AddAutoMapper(typeof(MappingProfile).Assembly); // 2- if u have more than one profile 
-															//services.AddAutoMapper(M => M.AddProfile<MappingProfile>());// 3
+															//services.AddAutoMapper(typeof(MappingProfile).Assembly); // 2- if u have more than one profile Get All Profiles Inherit from profile in all project  
+															//services.AddAutoMapper(M => M.AddProfile<MappingProfile>());// 3 same like 1 create obj from MappingProfile using Parameter less Constructor 
+			services.AddAutoMapper(Mapper => Mapper.AddProfile(new MappingProfile() )); // 4 if i want send smth in the cons 
 
 			//*************************************************
-
+			services.AddScoped(typeof(IProductService) , typeof(ProducService));
 			//services.AddScoped<IServiceManager, ServiceManager>();
 			services.AddScoped(typeof(IServiceManager), typeof(ServiceManager));
 			return services;

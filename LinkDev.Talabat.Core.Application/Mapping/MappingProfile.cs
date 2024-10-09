@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using LinkDev.Talabat.Core.Application.Abstraction.Models;
+using LinkDev.Talabat.Core.Application.Abstraction.Models.Product;
 using LinkDev.Talabat.Core.Domain.Entities.Products;
 
 namespace LinkDev.Talabat.Core.Application.Mapping
 {
-	internal class MappingProfile:Profile
+    internal class MappingProfile:Profile
 	{
         public MappingProfile()
         {

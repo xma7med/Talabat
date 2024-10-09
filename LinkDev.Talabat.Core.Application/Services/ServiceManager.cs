@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using LinkDev.Talabat.Core.Application.Abstraction;
-using LinkDev.Talabat.Core.Application.Abstraction.Products;
+using LinkDev.Talabat.Core.Application.Abstraction.Services.Products;
 using LinkDev.Talabat.Core.Application.Services.Products;
 using LinkDev.Talabat.Core.Domain.Contracts.Persistence;
 using System;
@@ -12,11 +12,11 @@ using System.Threading.Tasks;
 namespace LinkDev.Talabat.Core.Application.Services
 {
 
-	// Will Intialize using Lazy Intialization  
-	// Generate Backing Field 
-	// Intialize 
+    // Will Intialize using Lazy Intialization  
+    // Generate Backing Field 
+    // Intialize 
 
-	internal class ServiceManager : IServiceManager
+    internal class ServiceManager : IServiceManager
 	{
 		private readonly IUnitOfWork unitOfWork;
 		private readonly IMapper mapper;
