@@ -19,7 +19,7 @@ namespace LinkDev.Talabat.Core.Application
 			services.AddAutoMapper(Mapper => Mapper.AddProfile(new MappingProfile() )); // 4 if i want send smth in the cons 
 
 			//*************************************************
-			services.AddScoped(typeof(IProductService) , typeof(ProducService));
+			//services.AddScoped(typeof(IProductService) , typeof(ProducService)); I dont need bec i make the obj bymyself in The service manger .. 
 			//services.AddScoped<IServiceManager, ServiceManager>();
 			services.AddScoped(typeof(IServiceManager), typeof(ServiceManager));
 			return services;
