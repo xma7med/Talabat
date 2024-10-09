@@ -32,7 +32,7 @@ namespace LinkDev.Talabat.APIs
 																										//DependencyInjection.AddPresistanceServices(webApplicationbuilder.Services , webApplicationbuilder.Configuration);	// traditional way 
 			webApplicationbuilder.Services.AddApplicationServices();
 			
-			//webApplicationbuilder.Services.AddScoped(typeof(IHttpContextAccessor) , typeof(HttpContextAccessor));
+			webApplicationbuilder.Services.AddHttpContextAccessor(); // Register All required services for 	HttpContextAccessor Not Only HttpContextAccessor
 			webApplicationbuilder.Services.AddScoped(typeof(ILoggedInUserService) , typeof(LoggedInUserService));
 			#endregion
 

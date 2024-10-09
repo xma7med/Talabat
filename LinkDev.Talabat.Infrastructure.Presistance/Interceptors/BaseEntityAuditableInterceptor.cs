@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace LinkDev.Talabat.Infrastructure.Presistance.Interceptors
 {
+	// To se Audit Data  
 	// Inherit : SaveChangesInterceptor
 	// We Need ILoggedInService To Know the Current User
 	// Service - Go to Wep App (API) WHY?? So I have Access to IHttpContextAccssor To make the sevice
@@ -44,24 +45,16 @@ namespace LinkDev.Talabat.Infrastructure.Presistance.Interceptors
 		{
 			if (dbContext == null) return;
 
-			var utcNow = DateTime.UtcNow;
-
-			foreach (var entry in dbContext.ChangeTracker.Entries<BaseAuditableEntity<int>>())
+			foreach (var entry in dbContext.ChangeTracker.Entries<BaseAuditableEntity<int>>() // Must any Entity inherit from BaseAuditableEntity Be Authenticated 
+				.Where(entity => entity.State is EntityState.Added or EntityState.Modified))
 			{
-				//if (entry.State==EntityState.Added ||  entry.State==EntityState.Modified)
-				//
-				if (entry is { State: EntityState.Added or EntityState.Modified })
+				if (entry.State is EntityState.Added)
 				{
-					if (entry.State == EntityState.Added)
-					{
-						entry.Entity.CreatedBy = "";
-						entry.Entity.CreatedOn = utcNow;
-
-					}
-
-					entry.Entity.LastModifiedBy = "";
-					entry.Entity.LastModifiedOn = utcNow;	
+					entry.Entity.CreatedBy = _loggedInUserService.UserId!;
+					entry.Entity.CreatedOn = DateTime.UtcNow;
 				}
+				entry.Entity.LastModifiedBy = _loggedInUserService.UserId!;
+				entry.Entity.LastModifiedOn = DateTime.UtcNow;
 			}
 		}
 	}
