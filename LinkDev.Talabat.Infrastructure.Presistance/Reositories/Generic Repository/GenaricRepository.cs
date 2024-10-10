@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace LinkDev.Talabat.Infrastructure.Presistance.Reositories.Generic_Repository
 {
-    internal class GenaricRepository<TEntity, TKey>(StoreContext DbContext) : IGenericRepository<TEntity, TKey>
+    internal class GenaricRepository<TEntity, TKey>(StoreContext _dbContext) : IGenericRepository<TEntity, TKey>
 		where TEntity : BaseAuditableEntity<TKey>
 		where TKey : IEquatable<TKey>
 
@@ -21,16 +21,18 @@ namespace LinkDev.Talabat.Infrastructure.Presistance.Reositories.Generic_Reposit
 		//=> withTracking ? await DbContext.Set<TEntity>().ToListAsync() : await DbContext.Set<TEntity>().AsNoTracking().ToListAsync();
 		// ******** Fixed --> but da mosakn l2n msh by722 el [open for extention close for modification]
 		{
-			if (typeof(TEntity) == typeof(Product))
+			if (typeof(TEntity) == typeof(Product)) 
 			{
-				return withTracking? (IEnumerable<TEntity>) (await DbContext.Set<Product>().Include(P => P.Brand).Include(P => P.Category).ToListAsync() ):
-					(IEnumerable<TEntity>)(await DbContext.Set<Product>().Include(P => P.Brand).Include(P => P.Category).AsNoTracking().ToListAsync());
+				return withTracking? (IEnumerable<TEntity>) (await _dbContext.Set<Product>().Include(P => P.Brand).Include(P => P.Category).ToListAsync() ):
+					(IEnumerable<TEntity>)(await _dbContext.Set<Product>().Include(P => P.Brand).Include(P => P.Category).AsNoTracking().ToListAsync());
 
 			}
-			 return withTracking? await DbContext.Set<TEntity>().ToListAsync() :
-				await DbContext.Set<TEntity>().AsNoTracking().ToListAsync();
+			  return withTracking? 
+				await _dbContext.Set<TEntity>().ToListAsync() :
+				await _dbContext.Set<TEntity>().AsNoTracking().ToListAsync();
 
 		}
+
 
 
 
@@ -47,11 +49,11 @@ namespace LinkDev.Talabat.Infrastructure.Presistance.Reositories.Generic_Reposit
 			if (typeof(TEntity) == typeof(Product))
 
 				// Return a product with its Brand and Category eagerly loaded
-				return await DbContext.Set<Product>().Where(P => P.Id.Equals(id))
+				return await _dbContext.Set<Product>().Where(P => P.Id.Equals(id))
 									  .Include(P => P.Brand)
 									  .Include(P => P.Category).FirstOrDefaultAsync() as TEntity;
 			// For other entities, just use FindAsync (no eager loading)
-			return await DbContext.Set<TEntity>().FindAsync(id);
+			return await _dbContext.Set<TEntity>().FindAsync(id);
 
 
 		}
@@ -69,19 +71,19 @@ namespace LinkDev.Talabat.Infrastructure.Presistance.Reositories.Generic_Reposit
 
 
 
-		public async Task AddAsync(TEntity entity) => await DbContext.Set<TEntity>().AddAsync(entity);
+		public async Task AddAsync(TEntity entity) => await _dbContext.Set<TEntity>().AddAsync(entity);
 		
-		public void Update(TEntity entity) =>DbContext.Set<TEntity>().Update(entity);
+		public void Update(TEntity entity) =>_dbContext.Set<TEntity>().Update(entity);
 		
 
-		public void Delete(TEntity entity) => 	DbContext.Set<TEntity>().Remove(entity);
+		public void Delete(TEntity entity) => 	_dbContext.Set<TEntity>().Remove(entity);
 
 
 		#region Helpers
 
 		private  IQueryable<TEntity> ApplySpecifications( ISpecifications<TEntity, TKey> spec)
 		{
-			return SpecificationEvaluator<TEntity, TKey>.GetQuery(DbContext.Set<TEntity>(), spec);
+			return SpecificationEvaluator<TEntity, TKey>.GetQuery(_dbContext.Set<TEntity>(), spec);
 		}
 
 
