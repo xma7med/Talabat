@@ -17,7 +17,7 @@ namespace LinkDev.Talabat.Core.Application.Services.Products
         {
             //var specs = new BaseSpecifications<Product, int>();
             //specs.Includes.Add(P=>P.Brand)!;
-            //specs.Includes.Add(P=>P.Category)!;
+            //specs.Includes.Add(P=>P.Category)!; 
             var specs = new ProductWithBrandAndCategorySpecifications();
             var products =mapper.Map<IEnumerable<ProductToReturnDto>>(await unitofWork.GetRepository<Product, int>().GetAllWithSpecAsync(specs));
             return products;    
