@@ -29,7 +29,7 @@ namespace LinkDev.Talabat.Infrastructure.Presistance.Reositories.Generic_Reposit
 			}
 			  return withTracking? 
 				await _dbContext.Set<TEntity>().ToListAsync() :
-				await _dbContext.Set<TEntity>().AsNoTracking().ToListAsync();
+				await _dbContext.Set<TEntity>().AsNoTracking().ToListAsync(); 
 
 		}
 
