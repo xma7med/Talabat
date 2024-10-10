@@ -44,7 +44,7 @@ namespace LinkDev.Talabat.Infrastructure.Presistance.Reositories.Generic_Reposit
 
 
 		// ********Fixed but this not Consider O in Solid The sol is Specification Design Pattern 
-		public async Task<TEntity?> GetAsync(TKey id) /*=> await DbContext.Set<TEntity>().FindAsync(id);*/ //1
+		public async Task<TEntity?> GetAsync(TKey id)  /*=> await DbContext.Set<TEntity>().FindAsync(id);*/ //1
 		{
 			if (typeof(TEntity) == typeof(Product))
 
@@ -59,7 +59,7 @@ namespace LinkDev.Talabat.Infrastructure.Presistance.Reositories.Generic_Reposit
 		}
 
 
-		public async Task<IEnumerable<TEntity>> GetAllWithSpecAsync(ISpecifications<TEntity, TKey> spec, bool withTracking = false)
+		public async Task<IEnumerable<TEntity>> GetAllWithSpecAsync (ISpecifications<TEntity, TKey> spec, bool withTracking = false)
 		{//       -------------------------Qurery------------------------------------------------ .ToListAsync()
 			return await  /*SpecificationEvaluator<TEntity, TKey>.GetQuery(DbContext.Set<TEntity>() , spec)*/ApplySpecifications( spec).ToListAsync();
 		}
