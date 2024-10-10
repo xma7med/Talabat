@@ -1,12 +1,12 @@
 ﻿using LinkDev.Talabat.Core.Domain.Common;
-using LinkDev.Talabat.Core.Domain.Contracts;
+using LinkDev.Talabat.Core.Domain.Contracts.Persistence;
 using LinkDev.Talabat.Infrastructure.Presistance.Data;
-using LinkDev.Talabat.Infrastructure.Presistance.Reositories;
+using LinkDev.Talabat.Infrastructure.Presistance.Reositories.Generic_Repository;
 using System.Collections.Concurrent;
 
 namespace LinkDev.Talabat.Infrastructure.Presistance.UnitOfWork
 {
-	public class UnitOfWork : IUnitOfWork 
+    public class UnitOfWork : IUnitOfWork 
 	{
 		private readonly StoreContext _dbContext;
 
@@ -21,7 +21,7 @@ namespace LinkDev.Talabat.Infrastructure.Presistance.UnitOfWork
 		}
 
         public IGenericRepository<TEntity, Tkey> GetRepository<TEntity, Tkey>()
-			where TEntity : BaseEntity<Tkey>
+			where TEntity : BaseAuditableEntity<Tkey>
 			where Tkey : IEquatable<Tkey>
 		{
 			///1- هتبقى مشكله لو نادى ع الميثود اكتر من مره بنفس التايب هيعمله اكتر من اوبجكت

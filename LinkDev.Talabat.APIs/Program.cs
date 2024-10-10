@@ -1,16 +1,16 @@
 
 using LinkDev.Talabat.APIs.Extention;
-using LinkDev.Talabat.Core.Domain.Contracts;
+using LinkDev.Talabat.APIs.Services;
+using LinkDev.Talabat.Core.Application;
+using LinkDev.Talabat.Core.Application.Abstraction;
 using LinkDev.Talabat.Infrastructure.Presistance;
-using LinkDev.Talabat.Infrastructure.Presistance.Data;
-using Microsoft.EntityFrameworkCore;
 
 namespace LinkDev.Talabat.APIs
 {
 	public class Program
 	{
 		public static async Task Main(string[] args)
-		{
+		{ 
 
 			/// the builder to build ASP.NET Core App
 			var webApplicationbuilder = WebApplication.CreateBuilder(args);
@@ -18,19 +18,23 @@ namespace LinkDev.Talabat.APIs
 			#region Confgure Services 
 			// Add services to the container.
 
-			webApplicationbuilder.Services.AddControllers();  // Register Required Services by ASP.NET Core --> Web APIs To DI Container 
+			webApplicationbuilder.Services.AddControllers() //Register Required Services by ASP.NET Core --> Web APIs To DI Container 
+										.AddApplicationPart(typeof(Controllers.AssemblyInformation).Assembly);  
+			 
+
 			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 			webApplicationbuilder.Services.AddEndpointsApiExplorer();
 			webApplicationbuilder.Services.AddSwaggerGen();
 
 
 			// Register Required services for Presistance layer 
-			webApplicationbuilder.Services.AddPresistanceServices(webApplicationbuilder.Configuration);	// first way
-			//DependencyInjection.AddPresistanceServices(webApplicationbuilder.Services , webApplicationbuilder.Configuration);	// traditional way 
-
-
+			webApplicationbuilder.Services.AddPresistanceServices(webApplicationbuilder.Configuration); // first way
+																										//DependencyInjection.AddPresistanceServices(webApplicationbuilder.Services , webApplicationbuilder.Configuration);	// traditional way 
+			webApplicationbuilder.Services.AddApplicationServices();
+			
+			webApplicationbuilder.Services.AddHttpContextAccessor(); // Register All required services for 	HttpContextAccessor Not Only HttpContextAccessor
+			webApplicationbuilder.Services.AddScoped(typeof(ILoggedInUserService) , typeof(LoggedInUserService));
 			#endregion
-
 
 			var app = webApplicationbuilder.Build();
 
@@ -93,7 +97,7 @@ namespace LinkDev.Talabat.APIs
 
 			//app.UseAuthorization();
 
-
+			app.UseStaticFiles();	
 			app.MapControllers(); 
 			#endregion
 
