@@ -15,7 +15,7 @@ namespace LinkDev.Talabat.Core.Application.Mapping
 		public string Resolve(Product source, ProductToReturnDto destination, string destMember, ResolutionContext context)
 		{
 			if (!string.IsNullOrEmpty(source.PictureUrl))
-				return $"{configuration["Urls:ApisBaseUrl"]}/{source.PictureUrl}";
+				return $"{configuration["Urls:ApiBaseUrl"]}/{source.PictureUrl}";
 			return string.Empty;
 		}
 	}
