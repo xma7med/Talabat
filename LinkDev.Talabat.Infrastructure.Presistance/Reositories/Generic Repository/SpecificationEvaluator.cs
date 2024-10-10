@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace LinkDev.Talabat.Infrastructure.Presistance.Reositories.Generic_Repository
 {
 	internal static class SpecificationEvaluator<TEntity , TKey>
-		where TEntity : BaseAuditableEntity<TKey>
+		where TEntity : BaseEntity<TKey>
 		where TKey : IEquatable<TKey>
 	{
 

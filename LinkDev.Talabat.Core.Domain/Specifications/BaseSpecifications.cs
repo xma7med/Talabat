@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace LinkDev.Talabat.Core.Domain.Specifications
 {
-	public class BaseSpecifications<TEntity, TKey> : ISpecifications<TEntity, TKey>
+	public abstract  class BaseSpecifications<TEntity, TKey> : ISpecifications<TEntity, TKey>
 		where TEntity : BaseAuditableEntity<TKey>
 		where TKey : IEquatable<TKey>	
 	{

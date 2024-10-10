@@ -13,7 +13,7 @@ namespace LinkDev.Talabat.Core.Domain.Contracts
 	// Implement Interface 
 	// Make Function that Take DbSet And Specification Object 
 	public interface ISpecifications<TEntity , TKey> 
-		where TEntity : BaseAuditableEntity<TKey>
+		where TEntity : BaseEntity<TKey>
 		where TKey : IEquatable<TKey>	
 	{
 
