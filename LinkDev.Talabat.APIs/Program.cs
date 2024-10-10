@@ -10,7 +10,7 @@ namespace LinkDev.Talabat.APIs
 	public class Program
 	{
 		public static async Task Main(string[] args)
-		{
+		{ 
 
 			/// the builder to build ASP.NET Core App
 			var webApplicationbuilder = WebApplication.CreateBuilder(args);
