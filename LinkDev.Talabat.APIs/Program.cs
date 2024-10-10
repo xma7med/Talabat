@@ -20,7 +20,7 @@ namespace LinkDev.Talabat.APIs
 
 			webApplicationbuilder.Services.AddControllers() //Register Required Services by ASP.NET Core --> Web APIs To DI Container 
 										.AddApplicationPart(typeof(Controllers.AssemblyInformation).Assembly);  
-
+			 
 
 			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 			webApplicationbuilder.Services.AddEndpointsApiExplorer();
