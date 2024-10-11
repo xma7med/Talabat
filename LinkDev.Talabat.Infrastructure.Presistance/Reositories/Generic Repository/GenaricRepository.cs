@@ -36,14 +36,12 @@ namespace LinkDev.Talabat.Infrastructure.Presistance.Reositories.Generic_Reposit
 
 		}
 
-
 		///{
 		///	 if (withTracking)
 		///		return await  _dbContext.Set<TEntity>().ToListAsync();	
 		///	 return await _dbContext.Set<TEntity>().AsNoTracking().ToListAsync();
 		///}
-
-
+		
 		// ********Fixed but this not Consider O in Solid The sol is Specification Design Pattern 
 		public async Task<TEntity?> GetAsync(TKey id)  /*=> await DbContext.Set<TEntity>().FindAsync(id);*/ //1
 		{
