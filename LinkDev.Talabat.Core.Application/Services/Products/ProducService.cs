@@ -21,7 +21,8 @@ namespace LinkDev.Talabat.Core.Application.Services.Products
             var specs = new ProductWithBrandAndCategorySpecifications(specParams.Sort, specParams.BrandId , specParams.CategoryId ,specParams.PageSize , specParams.PageIndex , specParams.Search );
             var /*products*/data =mapper.Map<IEnumerable<ProductToReturnDto>>(await unitofWork.GetRepository<Product, int>().GetAllWithSpecAsync(specs));
 			//return products;
-			var countSpec = new ProductWithFilterationForCountSpecifications(specParams.BrandId, specParams.CategoryId, string ? search);
+
+			var countSpec = new ProductWithFilterationForCountSpecifications(specParams.BrandId, specParams.CategoryId, specParams.Search);
 			var count = await unitofWork.GetRepository<Product,int>().GetCountAsync(countSpec);	
 			return new Pagination<ProductToReturnDto>(specParams.PageSize, specParams.PageIndex, count  ) { Data = data };
 		}

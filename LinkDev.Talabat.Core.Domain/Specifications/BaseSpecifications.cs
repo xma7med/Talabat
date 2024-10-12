@@ -20,7 +20,6 @@ namespace LinkDev.Talabat.Core.Domain.Specifications
             
         }
 
-
 		// Use it to  build specification object to build query that Get All Items 
 		protected BaseSpecifications(Expression<Func<TEntity, bool>>? criteriaExpression)
         {
@@ -32,7 +31,7 @@ namespace LinkDev.Talabat.Core.Domain.Specifications
 
 		}
 
-		// Use it to build specification object to build query that Get All Items 
+		// Use it to build specification object to build query that Get Specific Items 
 		protected BaseSpecifications(TKey id )
         {
 			Criteria = E=>E.Id.Equals(id);

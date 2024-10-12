@@ -23,6 +23,8 @@ namespace LinkDev.Talabat.Core.Domain.Specifications.Product_Specs
 
 			//if (!string.IsNullOrWhiteSpace(sort))
 			//{
+
+			//   Oreder By 
 				switch (sort)
 				{
 					case "nameDesc":
@@ -51,8 +53,6 @@ namespace LinkDev.Talabat.Core.Domain.Specifications.Product_Specs
 			ApplyPagenation(pageSize*(pageIndex-1), pageSize);
 
 		}
-
-
 
 		// This Object is Created via this Constructor , Will Be Used for Building the Query that Get a specific  Product 
 

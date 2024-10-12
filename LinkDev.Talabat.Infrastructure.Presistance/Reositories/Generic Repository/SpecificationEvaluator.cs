@@ -13,7 +13,7 @@ namespace LinkDev.Talabat.Infrastructure.Presistance.Reositories.Generic_Reposit
 			var query = inputQuery; // Ex : _dbContext.Set<Product>()
 
 			if (spec.Criteria != null)// P => P.Id==10
-				query = query.Where(spec.Criteria);
+				query = query.Where(spec.Criteria);//( true & true)
 
 			// query =  _dbContext.Set<Product>().Where(P => P.Id==10);
 			// include Experssion 
