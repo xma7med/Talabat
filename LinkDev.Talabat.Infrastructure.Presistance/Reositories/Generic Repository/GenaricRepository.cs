@@ -36,6 +36,17 @@ namespace LinkDev.Talabat.Infrastructure.Presistance.Reositories.Generic_Reposit
 		{//       -------------------------Qurery------------------------------------------------ .ToListAsync()
 			return await  /*SpecificationEvaluator<TEntity, TKey>.GetQuery(DbContext.Set<TEntity>() , spec)*/ApplySpecifications( spec).ToListAsync();
 		}
+		public async Task<TEntity?> GetWithSpecAsync(ISpecifications<TEntity, TKey> spec)
+		{
+			return await ApplySpecifications( spec).FirstOrDefaultAsync();		
+		}
+
+
+		// To Get Count 
+		public async Task<int> GetCountAsync(ISpecifications<TEntity, TKey> spec)
+		{
+			return await ApplySpecifications(spec).CountAsync();	
+		}
 
 
 		public async Task<TEntity?> GetAsync(TKey id)  /*=> await DbContext.Set<TEntity>().FindAsync(id);*/ //1
@@ -54,10 +65,6 @@ namespace LinkDev.Talabat.Infrastructure.Presistance.Reositories.Generic_Reposit
 		}
 
 
-		public async Task<TEntity?> GetWithSpecAsync(ISpecifications<TEntity, TKey> spec)
-		{
-			return await ApplySpecifications( spec).FirstOrDefaultAsync();		
-		}
 
 
 
@@ -76,6 +83,8 @@ namespace LinkDev.Talabat.Infrastructure.Presistance.Reositories.Generic_Reposit
 		{
 			return SpecificationEvaluator<TEntity, TKey>.GetQuery(_dbContext.Set<TEntity>(), spec);
 		}
+
+		
 
 
 		#endregion
