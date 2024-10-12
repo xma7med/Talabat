@@ -18,12 +18,12 @@ namespace LinkDev.Talabat.Core.Application.Services.Products
             //var specs = new BaseSpecifications<Product, int>();
             //specs.Includes.Add(P=>P.Brand)!;
             //specs.Includes.Add(P=>P.Category)!; 
-            var specs = new ProductWithBrandAndCategorySpecifications(specParams.Sort, specParams.BrandId , specParams.CategoryId ,specParams.PageSize , specParams.PageIndex );
+            var specs = new ProductWithBrandAndCategorySpecifications(specParams.Sort, specParams.BrandId , specParams.CategoryId ,specParams.PageSize , specParams.PageIndex , specParams.Search );
             var /*products*/data =mapper.Map<IEnumerable<ProductToReturnDto>>(await unitofWork.GetRepository<Product, int>().GetAllWithSpecAsync(specs));
 			//return products;
-			var countSpec = new ProductWithFilterationForCountSpecifications(specParams.BrandId, specParams.CategoryId);
+			var countSpec = new ProductWithFilterationForCountSpecifications(specParams.BrandId, specParams.CategoryId, string ? search);
 			var count = await unitofWork.GetRepository<Product,int>().GetCountAsync(countSpec);	
-			return new Pagination<ProductToReturnDto>(specParams.PageSize, specParams.PageIndex, count) { Data = data };
+			return new Pagination<ProductToReturnDto>(specParams.PageSize, specParams.PageIndex, count  ) { Data = data };
 		}
 		//=> mapper.Map<IEnumerable<ProductToReturnDto>>(await unitofWork.GetRepository<Product, int>().GetAllAsync());
 
