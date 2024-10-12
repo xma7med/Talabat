@@ -9,14 +9,14 @@ namespace LinkDev.Talabat.APIs.Controllers.Controllers.Products
 	{
 
 		[HttpGet] // Get :  /api/Products
-		public async Task<ActionResult<IEnumerable<ProductToReturnDto>>> GetProducts(string ? sort )
+		public async Task<ActionResult<IEnumerable<ProductToReturnDto>>> GetProducts(string ? sort, int? brandId, int? categoryId)
 		{ 
-			var products = await serviceManger.ProductService.GetProductsAsync(sort);
+			var products = await serviceManger.ProductService.GetProductsAsync(sort, brandId , categoryId);
 			return Ok(products);
 		}
 
 		[HttpGet("{id:int}")] //  Get :  /api/Products/id
-		public async Task<ActionResult<IEnumerable<ProductToReturnDto>>> GetProducts(int id)
+		public async Task<ActionResult<IEnumerable<ProductToReturnDto>>> GetProduct(int id)
 		{ 
 			var product = await serviceManger.ProductService.GetProductAsync(id);	
 

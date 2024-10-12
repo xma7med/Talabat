@@ -18,16 +18,25 @@ namespace LinkDev.Talabat.Core.Domain.Specifications
 		public Expression<Func<TEntity, object>>? OrderByDesc { get ; set ; } = null;
 
 
-		// Use it to  build specification object to build query that Get All Items 
-		public BaseSpecifications()
+        protected BaseSpecifications()
         {
+            
+        }
+
+
+		// Use it to  build specification object to build query that Get All Items 
+		protected BaseSpecifications(Expression<Func<TEntity, bool>>? criteriaExpression)
+        {
+
+			Criteria = criteriaExpression; //  P=>P.BrandId==2 && true
+
 			//Criteria = null;	
 			//Includes = new List<Expression<Func<TEntity, object>>>();
 
 		}
 
 		// Use it to build specification object to build query that Get All Items 
-		public BaseSpecifications(TKey id )
+		protected BaseSpecifications(TKey id )
         {
 			Criteria = E=>E.Id.Equals(id);
 			//Includes = new List<Expression<Func<TEntity, object>>>();
