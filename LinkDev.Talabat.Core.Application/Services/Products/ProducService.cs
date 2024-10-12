@@ -15,9 +15,10 @@ namespace LinkDev.Talabat.Core.Application.Services.Products
 		//                                                            specParams= sort, brandId , categoryId
 		public async Task<Pagination<ProductToReturnDto>> GetProductsAsync(ProductSpecParams specParams)
         {
-            //var specs = new BaseSpecifications<Product, int>();
-            //specs.Includes.Add(P=>P.Brand)!;
-            //specs.Includes.Add(P=>P.Category)!; 
+            /// Prop : non genaric  & i cant erite query here End point best practice should be less lines 
+			/// var specs = new BaseSpecifications<Product, int>();
+            ///specs.Includes.Add(P=>P.Brand)!;
+            ///specs.Includes.Add(P=>P.Category)!; 
             var specs = new ProductWithBrandAndCategorySpecifications(specParams.Sort, specParams.BrandId , specParams.CategoryId ,specParams.PageSize , specParams.PageIndex , specParams.Search );
             var /*products*/data =mapper.Map<IEnumerable<ProductToReturnDto>>(await unitofWork.GetRepository<Product, int>().GetAllWithSpecAsync(specs));
 			//return products;
