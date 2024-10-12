@@ -25,10 +25,18 @@ namespace LinkDev.Talabat.Infrastructure.Presistance.Reositories.Generic_Reposit
 			// 1.  P => P.Brand 
 			// 2.  P=> P.Category
 			// ...
-			                                                  // Expression
-			query = spec.Includes.Aggregate(query, (currentQuery, include) => currentQuery.Include(include));
+			// Expression
+
+			if (spec.OrderByDesc is not null)
+				query = query.OrderByDescending(spec.OrderByDesc);
+			else if (spec.OrderBy is not null)
+				query = query.OrderBy(spec.OrderBy);
 
 
+			//								Seed 
+			query = spec.Includes.Aggregate(query, (currentQuery, includeExpression) => currentQuery.Include(includeExpression));
+
+			//Deffered Execution 
 			// query = _dbContext.Set<Product>().Where(P => P.Id==10).Include(P => P.Brand );
 			// query = _dbContext.Set<Product>().Where(P => P.Id==10).Include(P => P.Brand ).Include( P=> P.Category);
 

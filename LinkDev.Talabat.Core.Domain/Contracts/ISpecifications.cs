@@ -24,7 +24,14 @@ namespace LinkDev.Talabat.Core.Domain.Contracts
 
 
 		// return object cause maybe ( brand or OrderItems) 
-		public List<Expression<Func<TEntity, object  /*BaseAuditableEntity*/>>> Includes { get; set; }	
+		public List<Expression<Func<TEntity, object  /*BaseAuditableEntity*/>>> Includes { get; set; }
 
-	}
+
+
+        /// OrderBy - OrderBy Desc Spects
+
+        public Expression<Func<TEntity, object>>? OrderBy { get; set; }
+        public Expression<Func<TEntity, object>>? OrderByDesc { get; set; }
+
+    }
 }
