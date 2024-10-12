@@ -3,22 +3,21 @@ using LinkDev.Talabat.Core.Application.Abstraction.Models.Product;
 using LinkDev.Talabat.Core.Application.Abstraction.Services.Products;
 using LinkDev.Talabat.Core.Domain.Contracts.Persistence;
 using LinkDev.Talabat.Core.Domain.Entities.Products;
-using LinkDev.Talabat.Core.Domain.Specifications;
 using LinkDev.Talabat.Core.Domain.Specifications.Product_Specs;
 
 namespace LinkDev.Talabat.Core.Application.Services.Products
 {
-    // Remember I dont Neeed It PUBLIC OutSide layer dependOn ABSTRACTION NOT IMPLEMENTATION 
-    // INJECT MAPPER  - Allow DI for IMapper 
-    internal class ProducService(IUnitOfWork unitofWork, IMapper mapper) : IProductService
+	// Remember I dont Neeed It PUBLIC OutSide layer dependOn ABSTRACTION NOT IMPLEMENTATION 
+	// INJECT MAPPER  - Allow DI for IMapper 
+	internal class ProducService(IUnitOfWork unitofWork, IMapper mapper) : IProductService
     {
-
-        public async Task<IEnumerable<ProductToReturnDto>> GetProductsAsync(string? sort, int? brandId, int? categoryId)
+		//                                                            specParams= sort, brandId , categoryId
+		public async Task<IEnumerable<ProductToReturnDto>> GetProductsAsync(ProductSpecParams specParams)
         {
             //var specs = new BaseSpecifications<Product, int>();
             //specs.Includes.Add(P=>P.Brand)!;
             //specs.Includes.Add(P=>P.Category)!; 
-            var specs = new ProductWithBrandAndCategorySpecifications(sort, brandId , categoryId);
+            var specs = new ProductWithBrandAndCategorySpecifications(specParams.Sort, specParams.BrandId , specParams.CategoryId ,specParams.PageSize , specParams.PageIndex );
             var products =mapper.Map<IEnumerable<ProductToReturnDto>>(await unitofWork.GetRepository<Product, int>().GetAllWithSpecAsync(specs));
             return products;    
 		}

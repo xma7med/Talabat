@@ -1,16 +1,11 @@
 ﻿using LinkDev.Talabat.Core.Domain.Entities.Products;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LinkDev.Talabat.Core.Domain.Specifications.Product_Specs
 {
 	public class ProductWithBrandAndCategorySpecifications : BaseSpecifications<Product, int>
 	{
 		// This Object is Created via this Constructor , Will Be Used for Building the Query that Get All Products 
-		public ProductWithBrandAndCategorySpecifications(string? sort, int? brandId, int? categoryId)
+		public ProductWithBrandAndCategorySpecifications(string? sort, int? brandId, int? categoryId , int pageSize, int pageIndex )
 			: base(
 				  
 				  P=>
@@ -45,6 +40,13 @@ namespace LinkDev.Talabat.Core.Domain.Specifications.Product_Specs
 			//}
 			//else
 			//	AddOrderBy(P => P.Name);
+
+
+			/// Ex
+			// totalProducts = 18 ~ 20
+			// pageSize      = 5
+			// pageIndex     = 3
+			ApplyPagenation(pageSize*(pageIndex-1), pageSize);
 
 		}
 

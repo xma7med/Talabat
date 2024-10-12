@@ -1,10 +1,5 @@
 ﻿using LinkDev.Talabat.Core.Domain.Common;
 using LinkDev.Talabat.Core.Domain.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LinkDev.Talabat.Infrastructure.Presistance.Reositories.Generic_Repository
 {
@@ -31,6 +26,10 @@ namespace LinkDev.Talabat.Infrastructure.Presistance.Reositories.Generic_Reposit
 				query = query.OrderByDescending(spec.OrderByDesc);
 			else if (spec.OrderBy is not null)
 				query = query.OrderBy(spec.OrderBy);
+
+
+			if(spec.IsPagenationEnable)
+				query=query.Skip(spec.Skip).Take(spec.Take);
 
 
 			//								Seed 

@@ -1,10 +1,5 @@
 ﻿using LinkDev.Talabat.Core.Domain.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LinkDev.Talabat.Core.Domain.Specifications
 {
@@ -16,9 +11,11 @@ namespace LinkDev.Talabat.Core.Domain.Specifications
 		public List<Expression<Func<TEntity, object>>> Includes { get; set; } = new /*List<Expression<Func<TEntity, object>>>*/();
 		public Expression<Func<TEntity, object>>? OrderBy { get; set ; } = null; 
 		public Expression<Func<TEntity, object>>? OrderByDesc { get ; set ; } = null;
+		public int Skip { get; set ; }
+		public int Take { get ; set ; }
+		public bool IsPagenationEnable { get; set ; }
 
-
-        protected BaseSpecifications()
+		protected BaseSpecifications()
         {
             
         }
@@ -58,6 +55,15 @@ namespace LinkDev.Talabat.Core.Domain.Specifications
 		{
 			
 		}
+
+
+		private protected void ApplyPagenation(int skip , int take )
+		{ 
+			IsPagenationEnable = true;
+			Skip = skip;	
+			Take = take;
+		}
+
 
 	}
 }
