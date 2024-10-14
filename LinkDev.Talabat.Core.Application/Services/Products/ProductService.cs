@@ -10,7 +10,7 @@ namespace LinkDev.Talabat.Core.Application.Services.Products
 {
 	// Remember I dont Neeed It PUBLIC OutSide layer dependOn ABSTRACTION NOT IMPLEMENTATION 
 	// INJECT MAPPER  - Allow DI for IMapper 
-	internal class ProducService(IUnitOfWork unitofWork, IMapper mapper) : IProductService
+	internal class ProductService(IUnitOfWork unitofWork, IMapper mapper) : IProductService
 	{
 		//                                                            specParams= sort, brandId , categoryId
 		public async Task<Pagination<ProductToReturnDto>> GetProductsAsync(ProductSpecParams specParams)
