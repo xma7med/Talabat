@@ -16,7 +16,7 @@ namespace LinkDev.Talabat.Core.Application.Services.Products
 		public async Task<Pagination<ProductToReturnDto>> GetProductsAsync(ProductSpecParams specParams)
         {
             /// Prop : non genaric  & i cant erite query here End point best practice should be less lines 
-			/// var specs = new BaseSpecifications<Product, int>();
+			/// var specs = new BaseSpecifications<Product, int>(); 
             ///specs.Includes.Add(P=>P.Brand)!;
             ///specs.Includes.Add(P=>P.Category)!; 
             var specs = new ProductWithBrandAndCategorySpecifications(specParams.Sort, specParams.BrandId , specParams.CategoryId ,specParams.PageSize , specParams.PageIndex , specParams.Search );
