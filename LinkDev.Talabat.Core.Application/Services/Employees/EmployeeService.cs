@@ -4,11 +4,6 @@ using LinkDev.Talabat.Core.Application.Abstraction.Services.Employees;
 using LinkDev.Talabat.Core.Domain.Contracts.Persistence;
 using LinkDev.Talabat.Core.Domain.Entities.Employees;
 using LinkDev.Talabat.Core.Domain.Specifications.Employees;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LinkDev.Talabat.Core.Application.Services.Employees
 {
