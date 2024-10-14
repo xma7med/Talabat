@@ -7,7 +7,9 @@ namespace LinkDev.Talabat.Core.Domain.Specifications
 		where TEntity : BaseAuditableEntity<TKey>
 		where TKey : IEquatable<TKey>	
 	{
+		// Where 
 		public Expression<Func<TEntity, bool>>? Criteria { get; set; } = null; 
+		// Includes 
 		public List<Expression<Func<TEntity, object>>> Includes { get; set; } = new /*List<Expression<Func<TEntity, object>>>*/();
 		public Expression<Func<TEntity, object>>? OrderBy { get; set ; } = null; 
 		public Expression<Func<TEntity, object>>? OrderByDesc { get ; set ; } = null;
