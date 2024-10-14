@@ -1,9 +1,12 @@
 
+using LinkDev.Talabat.APIs.Controllers.Controllers.Errors;
 using LinkDev.Talabat.APIs.Extention;
 using LinkDev.Talabat.APIs.Services;
 using LinkDev.Talabat.Core.Application;
 using LinkDev.Talabat.Core.Application.Abstraction;
 using LinkDev.Talabat.Infrastructure.Presistance;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 
 namespace LinkDev.Talabat.APIs
 {
@@ -19,8 +22,43 @@ namespace LinkDev.Talabat.APIs
 			// Add services to the container.
 
 			webApplicationbuilder.Services.AddControllers() //Register Required Services by ASP.NET Core --> Web APIs To DI Container 
-										.AddApplicationPart(typeof(Controllers.AssemblyInformation).Assembly);  
-			 
+										 .ConfigureApiBehaviorOptions(options =>
+										 {
+											 /// 2.1 Second Way to Handle Validation Exceptions By Configuring The Factory That Generate The Validation Response
+											 options.SuppressModelStateInvalidFilter = false ;// false = On  true = Off  ==> The Default Action Filter Come from [ApiControoller]
+											 options.InvalidModelStateResponseFactory = (actionContext) =>
+											 {
+												 var errors = actionContext.ModelState.Where(P => P.Value!.Errors.Count > 0)
+																		.SelectMany(P => P.Value!.Errors) // Bec every Parameter have many Error ( object )
+																		.Select(E => E.ErrorMessage);
+												 return new BadRequestObjectResult(new ApiValidationErrorResponse()
+												 {
+													 Errors = errors
+												 });
+											 };
+										 }) 
+										 .AddApplicationPart(typeof(Controllers.AssemblyInformation).Assembly);
+			/// 2.2 Second Way to Handle Validation Exceptions By Configuring The Factory That Generate The Validation Response
+
+			webApplicationbuilder.Services.Configure<ApiBehaviorOptions>(options =>
+			{
+				/// Second Way to Handle Validation Exceptions By Configuring The Factory That Generate The Validation Response
+				options.SuppressModelStateInvalidFilter = false;// false = On  true = Off  ==> The Default Action Filter Come from [ApiControoller]
+				options.InvalidModelStateResponseFactory = (actionContext) =>
+				{
+					var errors = actionContext.ModelState.Where(P => P.Value!.Errors.Count > 0)
+										   .SelectMany(P => P.Value!.Errors) // Bec every Parameter have many Error ( object )
+										   .Select(E => E.ErrorMessage);
+					return new BadRequestObjectResult(new ApiValidationErrorResponse()
+					{
+						Errors = errors
+					});
+				};
+			}
+
+				);
+
+
 
 			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 			webApplicationbuilder.Services.AddEndpointsApiExplorer();
