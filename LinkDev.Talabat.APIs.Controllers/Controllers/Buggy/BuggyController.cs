@@ -1,4 +1,5 @@
 ﻿using LinkDev.Talabat.APIs.Controllers.Controllers.Base;
+using LinkDev.Talabat.APIs.Controllers.Controllers.Errors;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -16,8 +17,26 @@ namespace LinkDev.Talabat.APIs.Controllers.Controllers.Buggy
 		[HttpGet("notfound")] // GET: /api/buggy/notfound
 		public IActionResult GetNotFoundRequest()
 		{
-			return NotFound(); // 404 Not Found
+			/// Default
+			//return NotFound(); // 404 Not Found
+			///First Way Anony obj Then Enhance And Make The obj
+			//return NotFound(new { StatusCode = 400, Massage = "Bad Request" });
+			return NotFound(new ApiResponse(404));
 		}
+
+		[HttpGet("badrequest")] // GET: /api/buggy/badrequest
+		public IActionResult GetBadRequest()
+		{
+			//return BadRequest(new {StatusCode = 400 , Massage ="Bad Request" }); // 400 Bad Request
+			return BadRequest(new ApiResponse(400));
+		}
+
+		[HttpGet("unauthorized")] // GET: /api/buggy/unauthorized
+		public IActionResult GetUnauthorizedError()
+		{
+			return Unauthorized(new ApiResponse(404)/*new { StatusCode = 401, Message = "Unauthorized" }*/); // 401
+		}
+
 
 		[HttpGet("servererror")] // GET: /api/buggy/servererror
 		public IActionResult GetServerError()
@@ -25,11 +44,6 @@ namespace LinkDev.Talabat.APIs.Controllers.Controllers.Buggy
 			throw new Exception(); // 500 Internal Server Error
 		}
 
-		[HttpGet("badrequest")] // GET: /api/buggy/badrequest
-		public IActionResult GetBadRequest()
-		{
-			return BadRequest(new {StatusCode = 400 , Massage ="Bad Request" }); // 400 Bad Request
-		}
 
 		// Special Type Of BadRequest
 		[HttpGet("badrequest/{id}")] // /api/buggy/badrequest/five     (if i send string id ) Will not Enter the End Point 
@@ -39,11 +53,6 @@ namespace LinkDev.Talabat.APIs.Controllers.Controllers.Buggy
 			return Ok();
 		}
 
-		[HttpGet("unauthorized")] // GET: /api/buggy/unauthorized
-		public IActionResult GetUnauthorizedError()
-		{
-			return Unauthorized(new { StatusCode = 401, Message = "Unauthorized" }); // 401
-		}
 
 		[HttpGet("forbidden")] // GET: /api/buggy/forbidden
 		public IActionResult GetForbiddenRequest()
