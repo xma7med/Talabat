@@ -6,7 +6,7 @@ using LinkDev.Talabat.APIs.Services;
 using LinkDev.Talabat.Core.Application;
 using LinkDev.Talabat.Core.Application.Abstraction;
 using LinkDev.Talabat.Infrastructure.Presistance;
-using Microsoft.AspNetCore.Http.HttpResults;
+using LinkDev.Talabat.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LinkDev.Talabat.APIs
@@ -39,25 +39,23 @@ namespace LinkDev.Talabat.APIs
 											 };
 										 }) 
 										 .AddApplicationPart(typeof(Controllers.AssemblyInformation).Assembly);
-			/// 2.2 Second Way to Handle Validation Exceptions By Configuring The Factory That Generate The Validation Response
-
-			webApplicationbuilder.Services.Configure<ApiBehaviorOptions>(options =>
-			{
-				/// Second Way to Handle Validation Exceptions By Configuring The Factory That Generate The Validation Response
-				options.SuppressModelStateInvalidFilter = false;// false = On  true = Off  ==> The Default Action Filter Come from [ApiControoller]
-				options.InvalidModelStateResponseFactory = (actionContext) =>
-				{
-					var errors = actionContext.ModelState.Where(P => P.Value!.Errors.Count > 0)
-										   .SelectMany(P => P.Value!.Errors) // Bec every Parameter have many Error ( object )
-										   .Select(E => E.ErrorMessage);
-					return new BadRequestObjectResult(new ApiValidationErrorResponse()
-					{
-						Errors = errors
-					});
-				};
-			}
-
-				);
+			// 2.2 Second Way to Handle Validation Exceptions By Configuring The Factory That Generate The Validation Response
+			///webApplicationbuilder.Services.Configure<ApiBehaviorOptions>(options =>
+			///{
+			///	/// Second Way to Handle Validation Exceptions By Configuring The Factory That Generate The Validation Response
+			///	options.SuppressModelStateInvalidFilter = false;// false = On  true = Off  ==> The Default Action Filter Come from [ApiControoller]
+			///	options.InvalidModelStateResponseFactory = (actionContext) =>
+			///	{
+			///		var errors = actionContext.ModelState.Where(P => P.Value!.Errors.Count > 0)
+			///							   .SelectMany(P => P.Value!.Errors) // Bec every Parameter have many Error ( object )
+			///							   .Select(E => E.ErrorMessage);
+			///		return new BadRequestObjectResult(new ApiValidationErrorResponse()
+			///		{
+			///			Errors = errors
+			///		});
+			///	};
+			///}
+			///	);
 
 
 
@@ -73,9 +71,11 @@ namespace LinkDev.Talabat.APIs
 			
 			webApplicationbuilder.Services.AddHttpContextAccessor(); // Register All required services for 	HttpContextAccessor Not Only HttpContextAccessor
 			webApplicationbuilder.Services.AddScoped(typeof(ILoggedInUserService) , typeof(LoggedInUserService));
+
+			webApplicationbuilder.Services.AddInfrastructureServices(webApplicationbuilder.Configuration);
 			#endregion
 
-			var app = webApplicationbuilder.Build();
+		   var app = webApplicationbuilder.Build();
 
 
 			#region DataBase Initializer
