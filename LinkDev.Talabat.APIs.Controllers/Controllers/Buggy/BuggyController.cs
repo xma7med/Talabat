@@ -1,11 +1,14 @@
 ﻿using LinkDev.Talabat.APIs.Controllers.Controllers.Base;
+using LinkDev.Talabat.APIs.Controllers.Controllers.Common;
 using LinkDev.Talabat.APIs.Controllers.Controllers.Errors;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace LinkDev.Talabat.APIs.Controllers.Controllers.Buggy
@@ -17,11 +20,13 @@ namespace LinkDev.Talabat.APIs.Controllers.Controllers.Buggy
 		[HttpGet("notfound")] // GET: /api/buggy/notfound
 		public IActionResult GetNotFoundRequest()
 		{
-			/// Default
+			/// first  Default
 			//return NotFound(); // 404 Not Found
-			///First Way Anony obj Then Enhance And Make The obj of standared response of ( NotFound , BadRequest , Unauthorized)
+			///second Way Anonymous obj Then  Enhance And Make The obj of standared response of ( NotFound , BadRequest , Unauthorized)
 			//return NotFound(new { StatusCode = 400, Massage = "Bad Request" });
-			return NotFound(new ApiResponse(404));
+			//return NotFound(new ApiResponse(404));
+			/// Third way throw exception 
+			throw new NotFoundException();
 		}
 
 		[HttpGet("badrequest")] // GET: /api/buggy/badrequest
@@ -37,17 +42,31 @@ namespace LinkDev.Talabat.APIs.Controllers.Controllers.Buggy
 			return Unauthorized(new ApiResponse(404)/*new { StatusCode = 401, Message = "Unauthorized" }*/); // 401
 		}
 
-
-
-
 		//**********************************************************************************************
 		//**********************************************************************************************
 
-		/// make middleWare
+		// 2 way --> 1 - handle exception may be thrown in every end piont or
+		//           2- make middleWare th handle exception in genaric way to the whole app and if any EndOint have diff handling for exception we handle it 
 		[HttpGet("servererror")] // GET: /api/buggy/servererror
 		public IActionResult GetServerError()
 		{
+			/// Not recommended way 
+			/// try
+			///{
+			///   throw new Exception(); // 500 Internal Server Error
+			///}
+			///catch (Exception ex)
+			///{
+			///	var response = new ApiResponse(500);
+			///
+			///	 Response.WriteAsync(JsonSerializer.Serialize(response));
+			///
+			///	return StatusCode(500);
+			///}
+
 			throw new Exception(); // 500 Internal Server Error
+
+
 		}
 
 		/// Handle it by Configure Faculty That generate the response of validation 

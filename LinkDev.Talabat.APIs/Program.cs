@@ -1,6 +1,7 @@
 
 using LinkDev.Talabat.APIs.Controllers.Controllers.Errors;
 using LinkDev.Talabat.APIs.Extention;
+using LinkDev.Talabat.APIs.Middlewares;
 using LinkDev.Talabat.APIs.Services;
 using LinkDev.Talabat.Core.Application;
 using LinkDev.Talabat.Core.Application.Abstraction;
@@ -123,6 +124,9 @@ namespace LinkDev.Talabat.APIs
 			#endregion
 
 			#region Configure Kestral Middlewares
+			
+			app.UseMiddleware<CustomExceptionHandlerMiddleware>();	
+
 
 			// Configure the HTTP request pipeline.
 			if (app.Environment.IsDevelopment())
