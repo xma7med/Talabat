@@ -1,6 +1,11 @@
-﻿using LinkDev.Talabat.Core.Application.Abstraction;
+﻿using AutoMapper;
+using LinkDev.Talabat.Core.Application.Abstraction;
+using LinkDev.Talabat.Core.Application.Abstraction.Services.Basket;
 using LinkDev.Talabat.Core.Application.Mapping;
 using LinkDev.Talabat.Core.Application.Services;
+using LinkDev.Talabat.Core.Application.Services.Basket;
+using LinkDev.Talabat.Core.Domain.Contracts.Infrastructure;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace LinkDev.Talabat.Core.Application
@@ -20,6 +25,23 @@ namespace LinkDev.Talabat.Core.Application
 			//services.AddScoped(typeof(IProductService) , typeof(ProducService)); I dont need bec i make the obj bymyself in The service manger .. 
 			//services.AddScoped<IServiceManager, ServiceManager>();
 			services.AddScoped(typeof(IServiceManager), typeof(ServiceManager));
+
+
+			/// For Service manger To give the req serv for BasketService 
+			/// first way
+			//services.AddScoped(typeof(IBasketService), typeof(BasketService));	// 1
+			//services.AddScoped(typeof(Func<IBasketService>) , typeof(Func<BasketService>));  // To Register Func<BasketService> Only  But BasketService need some required services so do 1
+			/// second way 
+			services.AddScoped(typeof(Func<BasketService>) , (ServiceProvider) =>
+			{
+				var basketRepository = ServiceProvider.GetRequiredService<IBasketRepository>();
+				var mapper = ServiceProvider.GetRequiredService<IMapper>();
+				var configuration = ServiceProvider.GetRequiredService<IConfiguration>();		
+
+				return new BasketService(basketRepository , mapper , configuration);
+			});
+
+
 			return services;
 		}
 	}

@@ -50,7 +50,7 @@ namespace LinkDev.Talabat.APIs.Middlewares
 
 						await httpContext.Response.WriteAsync(response.ToString()); // Serilizing to turn it to JSON 
 						break;
-					default:
+					    default:
 						if (_env.IsDevelopment())
 						{
 							// Development Mode 
