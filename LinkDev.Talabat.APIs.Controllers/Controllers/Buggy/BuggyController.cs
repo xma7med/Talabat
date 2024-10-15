@@ -15,7 +15,7 @@ namespace LinkDev.Talabat.APIs.Controllers.Controllers.Buggy
 {
 
 	// This Controller Just To Seee The Default Responce For Ech Error 
-	internal class BuggyController: ApiControllerBase
+	public class BuggyController: ApiControllerBase
 	{
 		[HttpGet("notfound")] // GET: /api/buggy/notfound
 		public IActionResult GetNotFoundRequest()
