@@ -6,7 +6,7 @@ namespace LinkDev.Talabat.Core.Application.Abstraction.Models.Basket
 	{
 		[Required]
 		public int Id { get; set; } // Will be the same product Id
-		[Required]
+		[Required (ErrorMessage ="Product Name Is Required ")]
 		public required string ProductName { get; set; }
 		public string? PictureUrl { get; set; }
 		[Required]

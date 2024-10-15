@@ -30,12 +30,12 @@ namespace LinkDev.Talabat.Core.Application.Services.Basket
 
 
 		}
-		public async Task DeleteCusatomerBasketAsync(string basketId)
+		public async Task DeleteCustomerBasketAsync(string basketId)
 		{
 			 var deleted = await basketRepository.DeleteAsync(basketId);
 			if (!deleted) throw new Exception();	
 		}
 
-
+		
 	}
 }

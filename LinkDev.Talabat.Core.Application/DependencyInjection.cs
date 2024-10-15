@@ -28,17 +28,17 @@ namespace LinkDev.Talabat.Core.Application
 
 
 			/// For Service manger To give the req serv for BasketService 
-			/// first way
+			/// first way 
 			//services.AddScoped(typeof(IBasketService), typeof(BasketService));	// 1
 			//services.AddScoped(typeof(Func<IBasketService>) , typeof(Func<BasketService>));  // To Register Func<BasketService> Only  But BasketService need some required services so do 1
-			/// second way 
-			services.AddScoped(typeof(Func<BasketService>) , (ServiceProvider) =>
+			/// second way
+			services.AddScoped(typeof(Func<IBasketService>) , (serviceProvider) =>
 			{
-				var basketRepository = ServiceProvider.GetRequiredService<IBasketRepository>();
-				var mapper = ServiceProvider.GetRequiredService<IMapper>();
-				var configuration = ServiceProvider.GetRequiredService<IConfiguration>();		
+				var basketRepository = serviceProvider.GetRequiredService<IBasketRepository>();
+				var mapper = serviceProvider.GetRequiredService<IMapper>();
+				var configuration = serviceProvider.GetRequiredService<IConfiguration>();		
 
-				return new BasketService(basketRepository , mapper , configuration);
+				return () => new BasketService(basketRepository , mapper , configuration);
 			});
 
 
