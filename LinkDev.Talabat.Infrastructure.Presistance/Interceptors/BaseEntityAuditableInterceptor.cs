@@ -1,6 +1,5 @@
 ﻿using LinkDev.Talabat.Core.Application.Abstraction;
 using LinkDev.Talabat.Core.Domain.Common;
-using LinkDev.Talabat.Infrastructure.Presistance.Data;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace LinkDev.Talabat.Infrastructure.Presistance.Interceptors

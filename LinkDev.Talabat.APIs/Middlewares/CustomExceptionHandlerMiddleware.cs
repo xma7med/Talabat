@@ -1,6 +1,5 @@
 ﻿using LinkDev.Talabat.APIs.Controllers.Controllers.Common;
 using LinkDev.Talabat.APIs.Controllers.Controllers.Errors;
-using Microsoft.AspNetCore.Http;
 using System.Net;
 
 namespace LinkDev.Talabat.APIs.Middlewares

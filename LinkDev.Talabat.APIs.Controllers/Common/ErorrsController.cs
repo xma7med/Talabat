@@ -1,13 +1,6 @@
-﻿using LinkDev.Talabat.APIs.Controllers.Controllers.Base;
-using LinkDev.Talabat.APIs.Controllers.Controllers.Errors;
-using Microsoft.AspNetCore.Http;
+﻿using LinkDev.Talabat.APIs.Controllers.Controllers.Errors;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LinkDev.Talabat.APIs.Controllers.Common
 {

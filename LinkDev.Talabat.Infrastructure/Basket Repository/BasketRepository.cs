@@ -1,12 +1,7 @@
 ﻿using LinkDev.Talabat.Core.Domain.Contracts.Infrastructure;
 using LinkDev.Talabat.Core.Domain.Entities.Basket;
 using StackExchange.Redis;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace LinkDev.Talabat.Infrastructure.Basket_Repository
 {
@@ -18,8 +13,8 @@ namespace LinkDev.Talabat.Infrastructure.Basket_Repository
 		// 1 
         public BasketRepository(IConnectionMultiplexer redis)
         {
-            
-        }
+			_database = redis.GetDatabase();
+		}
         public async Task<CustomerBasket?> GetAsync(string id)
 		{
 			var basket = await _database.StringGetAsync(id);
