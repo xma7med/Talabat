@@ -36,8 +36,13 @@ namespace LinkDev.Talabat.APIs
 											 options.InvalidModelStateResponseFactory = (actionContext) =>
 											 {
 												 var errors = actionContext.ModelState.Where(P => P.Value!.Errors.Count > 0)
-																		.SelectMany(P => P.Value!.Errors) // Bec every Parameter have many Error ( object )
-																		.Select(E => E.ErrorMessage);
+																		.Select(P => new ApiValidationErrorResponse.ValidationError() 
+																		{
+																			Field =P.Key,
+																			Errors = P.Value!.Errors.Select(E => E.ErrorMessage)
+																		});
+																		//.SelectMany(P => P.Value!.Errors) // Bec every Parameter have many Error ( object )
+																		//.Select(E => E.ErrorMessage);
 												 return new BadRequestObjectResult(new ApiValidationErrorResponse()
 												 {
 													 Errors = errors
@@ -131,7 +136,7 @@ namespace LinkDev.Talabat.APIs
 
 			#region Configure Kestral Middlewares
 			
-			app.UseMiddleware<CustomExceptionHandlerMiddleware>();	
+			app.UseMiddleware<ExceptionHandlerMiddleware>();	
 
 
 			// Configure the HTTP request pipeline.

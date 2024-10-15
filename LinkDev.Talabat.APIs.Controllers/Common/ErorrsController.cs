@@ -19,7 +19,7 @@ namespace LinkDev.Talabat.APIs.Controllers.Common
 			}
 			// and Continoue or use switch 
 
-			return StatusCode(Code);	// AnyThing Else  Return the default 
+			return StatusCode(Code , new ApiResponse(Code));	// AnyThing Else  Return the default 
 		}
 
 	}

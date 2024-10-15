@@ -1,5 +1,4 @@
 ﻿using LinkDev.Talabat.APIs.Controllers.Controllers.Base;
-using LinkDev.Talabat.APIs.Controllers.Controllers.Common;
 using LinkDev.Talabat.APIs.Controllers.Controllers.Errors;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,15 +10,15 @@ namespace LinkDev.Talabat.APIs.Controllers.Controllers.Buggy
 	public class BuggyController: ApiControllerBase
 	{
 		[HttpGet("notfound")] // GET: /api/buggy/notfound
-		public IActionResult GetNotFoundRequest()
+		public IActionResult GetNotFoundError()
 		{
 			/// first  Default
 			//return NotFound(); // 404 Not Found
 			///second Way Anonymous obj Then  Enhance And Make The obj of standared response of ( NotFound , BadRequest , Unauthorized)
 			//return NotFound(new { StatusCode = 400, Massage = "Bad Request" });
-			//return NotFound(new ApiResponse(404));
+			return NotFound(new ApiResponse(404));
 			/// Third way throw exception 
-			throw new NotFoundException();
+			//throw new NotFoundException();
 		}
 
 		[HttpGet("badrequest")] // GET: /api/buggy/badrequest
