@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using LinkDev.Talabat.Core.Application.Abstraction.Models.Basket;
 using LinkDev.Talabat.Core.Application.Abstraction.Models.Employee;
 using LinkDev.Talabat.Core.Application.Abstraction.Models.Product;
+using LinkDev.Talabat.Core.Domain.Entities.Basket;
 using LinkDev.Talabat.Core.Domain.Entities.Employees;
 using LinkDev.Talabat.Core.Domain.Entities.Products;
 
@@ -23,6 +25,9 @@ namespace LinkDev.Talabat.Core.Application.Mapping
 
 
 			CreateMap<Employee, EmployeeToReturnDto>();
+
+            CreateMap<CustomerBasket, CustomerBasketDto>().ReverseMap();
+            CreateMap<BasketItem, BasketItemDto>().ReverseMap();    
 
 		}
 	}
