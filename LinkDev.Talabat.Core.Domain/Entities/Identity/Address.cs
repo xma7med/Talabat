@@ -14,13 +14,13 @@ namespace LinkDev.Talabat.Core.Domain.Entities.Identity
 		public required string Street { get; set; }
 		public required string City { get; set; }
 		public required string Country { get; set; }
-        public int UserId { get; set; }
+        public required string UserId { get; set; } //string bec the appuseridentyty TKey is string 
 
-        /// Any Relation by default mapped 1 to many 
-        /// Addede FK in the Required Side  
-        /// Must Add it And make Data Annotation or fluent API to make it unique (No Duplicate )
+		/// Any Relation by default mapped 1 to many 
+		/// Addede FK in the Required Side  
+		/// Must Add it And make Data Annotation or fluent API to make it unique (No Duplicate )
 
-        public required ApplicationUser AppUser { get; set; } // Mandatory 
+		public virtual required ApplicationUser User { get; set; } // Mandatory 
 
     }
 }

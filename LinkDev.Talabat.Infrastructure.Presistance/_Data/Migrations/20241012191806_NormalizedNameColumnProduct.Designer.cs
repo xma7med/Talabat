@@ -4,16 +4,19 @@ using LinkDev.Talabat.Infrastructure.Presistance.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
 namespace LinkDev.Talabat.Infrastructure.Presistance.Data.Migrations
 {
-    [DbContext(typeof(StoreContext))]
-    partial class StoreContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(StoreDbContext))]
+    [Migration("20241012191806_NormalizedNameColumnProduct")]
+    partial class NormalizedNameColumnProduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -64,8 +67,7 @@ namespace LinkDev.Talabat.Infrastructure.Presistance.Data.Migrations
 
                     b.Property<string>("NormalizedName")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PictureUrl")
                         .HasColumnType("nvarchar(max)");

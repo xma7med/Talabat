@@ -1,10 +1,16 @@
 ﻿using LinkDev.Talabat.Core.Domain.Contracts.Persistence;
 using LinkDev.Talabat.Core.Domain.Entities.Products;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace LinkDev.Talabat.Infrastructure.Presistance.Data
 {
-	internal class StoreContextInitializer(StoreContext _dbContext) : IStoreContextIntializer
+    internal class StoreDbContextInitializer(StoreDbContext _dbContext) : IStoreContextIntializer
 	{
 		// Asked using Primary Constructor  
 		///private readonly StoreContext _dbContext;

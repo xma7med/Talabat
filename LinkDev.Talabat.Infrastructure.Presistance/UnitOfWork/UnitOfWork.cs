@@ -8,12 +8,12 @@ namespace LinkDev.Talabat.Infrastructure.Presistance.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork 
 	{
-		private readonly StoreContext _dbContext;
+		private readonly StoreDbContext _dbContext;
 
 		private readonly ConcurrentDictionary<string, object> _repositories;
 		// Common way to implement Unit Of Work 
 
-		public UnitOfWork(StoreContext dbContext)
+		public UnitOfWork(StoreDbContext dbContext)
         {
 			_dbContext = dbContext;
 			               // syntax suger .net  c# 9
