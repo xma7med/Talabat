@@ -3,7 +3,6 @@ using LinkDev.Talabat.Core.Application.Abstraction.Services.Auth;
 using LinkDev.Talabat.Core.Application.Exception;
 using LinkDev.Talabat.Core.Domain.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -22,9 +21,9 @@ namespace LinkDev.Talabat.Core.Application.Services.Auth
 		public async Task<UserDto> LoginAsync(LoginDto model)
 		{
 			var user = await userManager.FindByEmailAsync(model.Email);
-			if (user is null) throw new BadRequestException("Invalid Login");
+			if (user is null) throw new UnAuthorizedException("Invalid Login");
 			var result = await signInManager.CheckPasswordSignInAsync(user, model.Password, lockoutOnFailure : true);
-			if (!result.Succeeded) throw new BadRequestException("Invalid Login");
+			if (!result.Succeeded) throw new UnAuthorizedException("Invalid Login");
 
 			var response = new UserDto()
 			{

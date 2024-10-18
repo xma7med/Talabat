@@ -80,6 +80,13 @@ namespace LinkDev.Talabat.APIs.Middlewares
 
 					await httpContext.Response.WriteAsync(response.ToString());
 					break;
+				case UnAuthorizedException:
+					httpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+					httpContext.Response.ContentType = "application/json";
+					response = new ApiResponse(401, ex.Message);
+
+					await httpContext.Response.WriteAsync(response.ToString());
+					break;
 				/// To handle Any System Exceptions - UnExpected Exceptions --> (Nullreferance , Db Connection Problems ...)
 				default:
 					response = _env.IsDevelopment()?
