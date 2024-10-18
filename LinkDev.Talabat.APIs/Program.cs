@@ -5,14 +5,13 @@ using LinkDev.Talabat.APIs.Middlewares;
 using LinkDev.Talabat.APIs.Services;
 using LinkDev.Talabat.Core.Application;
 using LinkDev.Talabat.Core.Application.Abstraction;
-using LinkDev.Talabat.Infrastructure.Presistance;
+using LinkDev.Talabat.Core.Domain.Entities.Identity;
 using LinkDev.Talabat.Infrastructure;
+using LinkDev.Talabat.Infrastructure.Presistance;
+using LinkDev.Talabat.Infrastructure.Presistance.Identity;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
-using Azure;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Model;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.ComponentModel;
-using System.Security.AccessControl;
 
 namespace LinkDev.Talabat.APIs
 {
@@ -74,16 +73,46 @@ namespace LinkDev.Talabat.APIs
 			webApplicationbuilder.Services.AddEndpointsApiExplorer();
 			webApplicationbuilder.Services.AddSwaggerGen();
 
-
-			// Register Required services for Presistance layer 
-			webApplicationbuilder.Services.AddPresistanceServices(webApplicationbuilder.Configuration); // first way
-																										//DependencyInjection.AddPresistanceServices(webApplicationbuilder.Services , webApplicationbuilder.Configuration);	// traditional way 
-			webApplicationbuilder.Services.AddApplicationServices();
-			
 			webApplicationbuilder.Services.AddHttpContextAccessor(); // Register All required services for 	HttpContextAccessor Not Only HttpContextAccessor
 			webApplicationbuilder.Services.AddScoped(typeof(ILoggedInUserService) , typeof(LoggedInUserService));
 
+
+
+			webApplicationbuilder.Services.AddApplicationServices();
+			// Register Required services for Presistance layer 
+			webApplicationbuilder.Services.AddPresistanceServices(webApplicationbuilder.Configuration); // first way
 			webApplicationbuilder.Services.AddInfrastructureServices(webApplicationbuilder.Configuration);
+																										//DependencyInjection.AddPresistanceServices(webApplicationbuilder.Services , webApplicationbuilder.Configuration);	// traditional way 
+			
+			/// Register Required Service for security / identity Services 
+			//webApplicationbuilder.Services.AddIdentity<ApplicationUser , IdentityRole>();	
+			webApplicationbuilder.Services.AddIdentity<ApplicationUser , IdentityRole>((identityOptions) =>
+			{
+				identityOptions.SignIn.RequireConfirmedAccount = true;
+				identityOptions.SignIn.RequireConfirmedEmail = true;
+				identityOptions.SignIn.RequireConfirmedPhoneNumber = true;
+
+				identityOptions.Password.RequireNonAlphanumeric = true; // #$@%
+				identityOptions.Password.RequiredUniqueChars = 2;
+				identityOptions.Password.RequiredLength = 6;
+				identityOptions.Password.RequireDigit = true;
+				identityOptions.Password.RequireLowercase = true;
+				identityOptions.Password.RequireUppercase = true;
+
+				identityOptions.User.RequireUniqueEmail = true;
+				// identityOptions.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyz0123456789";
+
+				identityOptions.Lockout.AllowedForNewUsers = true;
+				identityOptions.Lockout.MaxFailedAccessAttempts = 5;
+				identityOptions.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromHours(12);
+
+				/// Search 
+				//identityOptions.Stores
+				//identityOptions.Tokens
+				//identityOptions.ClaimsIdentity
+
+			})
+				.AddEntityFrameworkStores<StoreIdentityDbContext>();	
 			#endregion
 
 		   var app = webApplicationbuilder.Build();
@@ -128,7 +157,7 @@ namespace LinkDev.Talabat.APIs
 			#endregion
 
 			// Add Db Initializer & Seed into extention method to WebApplicationBuilder
-			await app.InitializeStoreContextAsync();
+			await app.InitializeDbAsync();
 
 
 

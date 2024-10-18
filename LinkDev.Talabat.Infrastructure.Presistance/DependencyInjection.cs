@@ -1,4 +1,5 @@
 ﻿using LinkDev.Talabat.Core.Domain.Contracts.Persistence;
+using LinkDev.Talabat.Core.Domain.Contracts.Persistence.DbInitializers;
 using LinkDev.Talabat.Infrastructure.Presistance.Data;
 using LinkDev.Talabat.Infrastructure.Presistance.Identity;
 using LinkDev.Talabat.Infrastructure.Presistance.Interceptors;
@@ -20,8 +21,8 @@ namespace LinkDev.Talabat.Infrastructure.Presistance
 					.UseSqlServer(configuration.GetConnectionString("StoreContext"));
 				} /*, contextLifetime: ServiceLifetime.Scoped , optionsLifetime : ServiceLifetime.Scoped*/);
 
-			services.AddScoped<IStoreContextIntializer, StoreDbContextInitializer>();
-			services.AddScoped(typeof(IStoreContextIntializer), typeof(StoreDbContextInitializer));
+			//services.AddScoped<IStoreDbIntializer, StoreDbInitializer>();
+			services.AddScoped(typeof(IStoreDbIntializer), typeof(StoreDbInitializer));
 
 			services.AddScoped(typeof(ISaveChangesInterceptor), typeof(BaseEntityAuditableInterceptor));
 
@@ -35,6 +36,9 @@ namespace LinkDev.Talabat.Infrastructure.Presistance
 				optionBuilder.UseLazyLoadingProxies()
 				.UseSqlServer(configuration.GetConnectionString("IdentityContext"));
 			});
+
+			services.AddScoped(typeof(IStoreIdentityDbInitializer), typeof(StoreIdentityDbInitializer));
+
 
 			#endregion
 			services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork.UnitOfWork));

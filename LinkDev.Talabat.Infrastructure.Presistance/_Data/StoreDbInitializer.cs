@@ -1,16 +1,11 @@
-﻿using LinkDev.Talabat.Core.Domain.Contracts.Persistence;
+﻿using LinkDev.Talabat.Core.Domain.Contracts.Persistence.DbInitializers;
 using LinkDev.Talabat.Core.Domain.Entities.Products;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using LinkDev.Talabat.Infrastructure.Presistance.Common;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace LinkDev.Talabat.Infrastructure.Presistance.Data
 {
-    internal class StoreDbContextInitializer(StoreDbContext _dbContext) : IStoreContextIntializer
+	internal sealed class StoreDbInitializer(StoreDbContext _dbContext) :DbInitializer(_dbContext) , IStoreDbIntializer
 	{
 		// Asked using Primary Constructor  
 		///private readonly StoreContext _dbContext;
@@ -18,15 +13,15 @@ namespace LinkDev.Talabat.Infrastructure.Presistance.Data
 	    ///{
 		///	_dbContext = dbContext;
 		///}
-        public async Task InitializeAsync() // Update- Database
-		{
-			var pendingMigrations =await  _dbContext.Database.GetPendingMigrationsAsync();
+       //      public async Task InitializeAsync() // Update- Database
+		//{
+		//	var pendingMigrations =await  _dbContext.Database.GetPendingMigrationsAsync();
 
-			if (pendingMigrations.Any())
-				await _dbContext.Database.MigrateAsync(); // Update-DataBase
-		}
+		//	if (pendingMigrations.Any())
+		//		await _dbContext.Database.MigrateAsync(); // Update-DataBase
+		//}
 
-		public async Task SeedAsync() // Seeds
+		public override async Task SeedAsync() // Seeds
 		{
 			if (!_dbContext.Brands.Any()) // check if table is empty first 
 			{
