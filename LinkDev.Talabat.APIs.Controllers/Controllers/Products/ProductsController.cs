@@ -3,6 +3,8 @@ using LinkDev.Talabat.APIs.Controllers.Controllers.Errors;
 using LinkDev.Talabat.Core.Application.Abstraction;
 using LinkDev.Talabat.Core.Application.Abstraction.Common;
 using LinkDev.Talabat.Core.Application.Abstraction.Models.Product;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LinkDev.Talabat.APIs.Controllers.Controllers.Products
@@ -11,6 +13,8 @@ namespace LinkDev.Talabat.APIs.Controllers.Controllers.Products
 	{
 
 		[HttpGet] // Get :  /api/Products
+		//[Authorize(AuthenticationSchemes = "Bearer")]
+		[Authorize/*(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)*/]
 		public async Task<ActionResult<Pagination<ProductToReturnDto>>> GetProducts([FromQuery]ProductSpecParams specParams)
 		{ 
 			var products = await serviceManger.ProductService.GetProductsAsync(specParams);

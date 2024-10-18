@@ -43,7 +43,7 @@ namespace LinkDev.Talabat.Core.Application.Services.Auth
 				DisplayName = model.DisplayName,
 				Email = model.Email,
 				UserName = model.UserName,
-				PhoneNumber = model.PhoneNumber,
+				PhoneNumber = model.Phone,
 			};
 			// to use hashing to the password  in user manager 
 			var result = await userManager.CreateAsync(user , model.Password);
