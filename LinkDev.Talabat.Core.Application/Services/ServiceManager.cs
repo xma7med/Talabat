@@ -38,11 +38,7 @@ namespace LinkDev.Talabat.Core.Application.Services
         // Will not Initialize till u Access the prop when u Access will Intilaize and if u access next time in same req wil provide the same obj 
         public IProductService ProductService => _productService.Value;
 		public IEmployeeService EmployeeService => _employeeService.Value;
-
-
-		IProductService IServiceManager.ProductService => throw new NotImplementedException();
-
-		IBasketService IServiceManager.BasketService => _basketService.Value;
+		public IBasketService BasketService => _basketService.Value;
 		public IAuthService AuthService => _authService.Value;
 
 

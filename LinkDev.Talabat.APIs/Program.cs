@@ -1,16 +1,11 @@
-
 using LinkDev.Talabat.APIs.Controllers.Controllers.Errors;
 using LinkDev.Talabat.APIs.Extention;
 using LinkDev.Talabat.APIs.Middlewares;
 using LinkDev.Talabat.APIs.Services;
 using LinkDev.Talabat.Core.Application;
 using LinkDev.Talabat.Core.Application.Abstraction;
-using LinkDev.Talabat.Core.Application.Abstraction.Models.Auth;
-using LinkDev.Talabat.Core.Domain.Entities.Identity;
 using LinkDev.Talabat.Infrastructure;
 using LinkDev.Talabat.Infrastructure.Presistance;
-using LinkDev.Talabat.Infrastructure.Presistance.Identity;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LinkDev.Talabat.APIs
