@@ -34,6 +34,9 @@ namespace LinkDev.Talabat.Infrastructure.Presistance.Data.Config.Products
 			builder.Property(P => P.Name)
 				.IsRequired()
 				.HasMaxLength(100);
+
+			builder.HasIndex(B => B.Name).IsUnique();
+
 			builder.Property(P => P.NormalizedName)
 				.IsRequired()
 				.HasMaxLength(100);

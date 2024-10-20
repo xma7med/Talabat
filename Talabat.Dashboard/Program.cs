@@ -1,8 +1,11 @@
+using LinkDev.Talabat.Core.Domain.Contracts.Persistence;
 using LinkDev.Talabat.Core.Domain.Entities.Identity;
 using LinkDev.Talabat.Infrastructure.Presistance.Data;
 using LinkDev.Talabat.Infrastructure.Presistance.Identity;
+using LinkDev.Talabat.Infrastructure.Presistance.UnitOfWork;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Talabat.Dashboard.Helpers;
 
 namespace Talabat.Dashboard
 {
@@ -20,6 +23,11 @@ namespace Talabat.Dashboard
 				optionBuilder.UseLazyLoadingProxies()
 				.UseSqlServer(builder.Configuration.GetConnectionString("StoreContext"));
 			});
+			builder.Services.AddDbContext<StoreIdentityDbContext>((optionBuilder) =>
+			{
+				optionBuilder.UseLazyLoadingProxies()
+				.UseSqlServer(builder.Configuration.GetConnectionString("IdentityContext"));
+			});
 			// to let him know that i will use appUser insted of IdentityUser
 			builder.Services.AddIdentity<ApplicationUser, IdentityRole>((identityOptions) =>
 			{
@@ -29,12 +37,8 @@ namespace Talabat.Dashboard
 				identityOptions.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromHours(12);
 			})
 			.AddEntityFrameworkStores<StoreIdentityDbContext>();
-
-			builder.Services.AddDbContext<StoreIdentityDbContext>((optionBuilder) =>
-			{
-				optionBuilder.UseLazyLoadingProxies()
-				.UseSqlServer(builder.Configuration.GetConnectionString("IdentityContext"));
-			});
+			builder.Services.AddScoped(typeof(IUnitOfWork), typeof(UnitOfWork));
+			builder.Services.AddAutoMapper(typeof(MapsProfile));
 
 			#endregion
 
@@ -58,7 +62,7 @@ namespace Talabat.Dashboard
 
 			app.MapControllerRoute(
 				name: "default",
-				pattern: "{controller=Home}/{action=Index}/{id?}");
+				pattern: "{controller=Admin}/{action=Login}/{id?}");
 
 			app.Run();
 		}

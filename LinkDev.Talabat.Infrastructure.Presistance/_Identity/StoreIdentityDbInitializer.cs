@@ -16,10 +16,11 @@ namespace LinkDev.Talabat.Infrastructure.Presistance.Identity
 				UserName = "xma7med",
 				Email ="xma7med@gmil.com",
 				PhoneNumber = "01012139178"
+			
 			};
 
 			//await _userManager.CreateAsync(user);	
-			await _userManager.CreateAsync(user   , "P@ssw0rd");	
+			await _userManager.CreateAsync(user   , "P@ssw0rd");
 		}
 	}
 }
