@@ -15,6 +15,7 @@ namespace LinkDev.Talabat.APIs.Extention
 		public static IServiceCollection AddIdentityServices(this IServiceCollection services , IConfiguration configuration)
 		{
 
+
 			services.Configure<JwtSetings>(configuration.GetSection("JWTSettings"));
 
 			/// Register Required Service for security / identity Services 
@@ -34,16 +35,14 @@ namespace LinkDev.Talabat.APIs.Extention
 
 				identityOptions.User.RequireUniqueEmail = true;
 				// identityOptions.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyz0123456789";
-
 				identityOptions.Lockout.AllowedForNewUsers = true;
 				identityOptions.Lockout.MaxFailedAccessAttempts = 5;
 				identityOptions.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromHours(12);
 
 				/// Search 
-				//identityOptions.Stores
-				//identityOptions.Tokens
-				//identityOptions.ClaimsIdentity
-
+				///identityOptions.Stores
+				///identityOptions.Tokens
+				///identityOptions.ClaimsIdentity
 			})
 				.AddEntityFrameworkStores<StoreIdentityDbContext>();
 

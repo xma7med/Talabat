@@ -64,11 +64,12 @@ namespace Talabat.Dashboard.Controllers
             {
                 if (model.Image != null)
                 {
-                    PictureSettings.DeleteFile(model.PictureUrl, "products");
+                    if (model.PictureUrl != null)
+                    {
+                        PictureSettings.DeleteFile(model.PictureUrl, "products");
+                    }
                     model.PictureUrl = PictureSettings.UploadFile(model.Image, "products");
                 }
-                else
-                    model.PictureUrl = PictureSettings.UploadFile(model.Image, "products");
                 var mappedProduct = _mappper.Map<ProductViewModel, Product>(model);
                 _unitOfWork.GetRepository<Product, int>().Update(mappedProduct);
                 var Result = await _unitOfWork.CompleteAsync();

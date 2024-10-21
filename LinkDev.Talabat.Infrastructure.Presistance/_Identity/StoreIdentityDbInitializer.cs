@@ -2,6 +2,7 @@
 using LinkDev.Talabat.Core.Domain.Entities.Identity;
 using LinkDev.Talabat.Infrastructure.Presistance.Common;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace LinkDev.Talabat.Infrastructure.Presistance.Identity
 {
@@ -18,9 +19,12 @@ namespace LinkDev.Talabat.Infrastructure.Presistance.Identity
 				PhoneNumber = "01012139178"
 			
 			};
-
-			//await _userManager.CreateAsync(user);	
-			await _userManager.CreateAsync(user   , "P@ssw0rd");
+            /// _dbContext.Users.Add(user);	
+            /// I can create through _dbContext BUT there some steps i want to do before it like hashing Password and alot 
+			/// so i will create by UserManager to the prerequired thing like hashing Password 
+			
+            //await _userManager.CreateAsync(user);	
+            await _userManager.CreateAsync(user   , "P@ssw0rd");
 		}
 	}
 }

@@ -20,7 +20,10 @@ namespace LinkDev.Talabat.Infrastructure.Presistance._Identity.Config
 	               
 			builder.HasOne(U => U.Address)
 				.WithOne(A => A.User)
-				.HasForeignKey<Address>(A => A.UserId)
+                // Fk in the total participated Side ( Address )
+                // In one to one Relation EF cant Detect Who the Pk Entity and the Fk Entity
+                // the FK Entity is the Addresss
+                .HasForeignKey<Address>(A => A.UserId)
 				.OnDelete(DeleteBehavior.Cascade);
 
 		}
