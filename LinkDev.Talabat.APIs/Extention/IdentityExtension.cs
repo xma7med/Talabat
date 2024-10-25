@@ -14,10 +14,7 @@ namespace LinkDev.Talabat.APIs.Extention
 	{
 		public static IServiceCollection AddIdentityServices(this IServiceCollection services , IConfiguration configuration)
 		{
-
-
 			services.Configure<JwtSetings>(configuration.GetSection("JWTSettings"));
-
 			/// Register Required Service for security / identity Services 
 			//webApplicationbuilder.Services.AddIdentity<ApplicationUser , IdentityRole>();	
 			services.AddIdentity<ApplicationUser, IdentityRole>((identityOptions) =>

@@ -11,20 +11,24 @@ namespace LinkDev.Talabat.Infrastructure.Presistance.Identity
 
 		public override async Task SeedAsync() // Seeds
 		{
-			var user = new ApplicationUser()
+			if (!_userManager.Users.Any())
 			{
-				DisplayName = "Mohamed Nasser",
-				UserName = "xma7med",
-				Email ="xma7med@gmil.com",
-				PhoneNumber = "01012139178"
-			
-			};
-            /// _dbContext.Users.Add(user);	
-            /// I can create through _dbContext Bec there some steps i want to do before it like hashing Password and alot 
-			/// so i will create by UserManager to the prerequired thing like hashing Password 
-			
-            //await _userManager.CreateAsync(user);	
-            await _userManager.CreateAsync(user   , "P@ssw0rd");
+				var user = new ApplicationUser()
+				{
+					DisplayName = "Mohamed Nasser",
+					UserName = "xma7med",
+					Email = "xma7med@gmil.com",
+					PhoneNumber = "01012139178"
+
+				};
+				/// _dbContext.Users.Add(user);	
+				/// I can create through _dbContext Bec there some steps i want to do before it like hashing Password and alot 
+				/// so i will create by UserManager to the prerequired thing like hashing Password 
+
+				//await _userManager.CreateAsync(user);	
+				await _userManager.CreateAsync(user, "P@ssw0rd");
+
+			}
 		}
 	}
 }
