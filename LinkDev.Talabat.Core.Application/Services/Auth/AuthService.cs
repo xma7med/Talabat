@@ -74,31 +74,39 @@ namespace LinkDev.Talabat.Core.Application.Services.Auth
 		// token => 1) header - 2) payload[registered / public for Auth & private for Info Exchange ] - 3) signature 
 		//
 		private async Task<string> GenerateTokenAsync(ApplicationUser user)
-		{   /// payloda - claims
-			// Private claims for info excchange
-			var  privateClaims = new List<Claim>()
+		{   /// payloda - claims [ Public - Private claims for info excchange]
+			// public Claims 
+
+
+            var claims = new List<Claim>()
 			{ 
 				new Claim (ClaimTypes.PrimarySid, user.Id), // The claim that i used in Interceptor 
 				new Claim (ClaimTypes.Email, user.Email!),
 				new Claim (ClaimTypes.GivenName, user.DisplayName),
+				//new Claim ("MyKey", user.DisplayName),// Private claim
 
-			}.Union (await userManager.GetClaimsAsync(user)).ToList();
-			foreach (var role in await userManager.GetRolesAsync(user))
-				privateClaims.Add(new Claim (ClaimTypes.Role, role));
-			/// Signature 
-			//Key must Convert to Bytes 
-			var authKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
+			}.Union (await userManager.GetClaimsAsync(user)).ToList(); //User Claims 
+			foreach (var role in await userManager.GetRolesAsync(user))// Roles As Claims 
+                claims.Add(new Claim (ClaimTypes.Role, role));
+            
+			//---------------------------------------------------------------------------------------------------------------
+
+            //Key must Convert to Bytes 
+            var authKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
+            /// Signature 
+            var signingCredentials = new SigningCredentials(authKey , SecurityAlgorithms.HmacSha256);
+			//---------------------------------------------------------------------------------------------------------------
+			
 			var tokenObj = new JwtSecurityToken(
 				/// Payload
 				// first pass the register Claims
-				audience:_jwtSettings.Audience,
 				issuer: _jwtSettings.Issuer,	
+				audience:_jwtSettings.Audience,
 				expires:DateTime.UtcNow.AddMinutes(_jwtSettings.DurationInMinutes),
-				// private Claims 
-				claims:privateClaims,
-				// Headre and Signature  
-				signingCredentials:new SigningCredentials(authKey , SecurityAlgorithms.HmacSha256)
-				);
+				// My Claims
+				claims: claims,
+				signingCredentials: signingCredentials /*new SigningCredentials(authKey , SecurityAlgorithms.HmacSha256)*/
+                );
 			// Generate / Create  Token 
 			return new JwtSecurityTokenHandler().WriteToken(tokenObj);
 		}

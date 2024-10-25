@@ -1,5 +1,5 @@
 ﻿using LinkDev.Talabat.Core.Domain.Common;
-using LinkDev.Talabat.Infrastructure.Presistance._Common;
+using LinkDev.Talabat.Infrastructure.Presistance.Common;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace LinkDev.Talabat.Infrastructure.Presistance.Data.Config.Base

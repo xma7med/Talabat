@@ -12,7 +12,7 @@
 	public class ApiValidationErrorResponse : ApiResponse
 	{
 // The Error Collection for every parameter error   Key (Parameter)           Value(Parameter Error )
-        public required IEnumerable</*ValidationError*/string> Errors { get; set; }
+        public required IEnumerable<ValidationError> Errors { get; set; }
 
         public ApiValidationErrorResponse(string ? message = null )
             :base (400 , message)

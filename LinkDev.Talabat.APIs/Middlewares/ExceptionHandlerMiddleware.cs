@@ -73,14 +73,14 @@ namespace LinkDev.Talabat.APIs.Middlewares
 
 					await httpContext.Response.WriteAsync(response.ToString()); // Serilizing to turn it to JSON 
 					break;
-					 
-                case ValidationException validationException:
+
+                case ValidationException:
                     httpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                     httpContext.Response.ContentType = "application/json";
-                    response = new ApiValidationErrorResponse(ex.Message) { Errors = validationException.Errors};
-
+                    response = new ApiResponse((int)HttpStatusCode.BadRequest, ex.Message);
                     await httpContext.Response.WriteAsync(response.ToString());
                     break;
+                    
                 case BadRequestException:
 					httpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
 					httpContext.Response.ContentType = "application/json";

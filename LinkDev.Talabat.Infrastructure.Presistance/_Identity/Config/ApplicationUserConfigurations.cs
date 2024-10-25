@@ -1,5 +1,5 @@
 ﻿using LinkDev.Talabat.Core.Domain.Entities.Identity;
-using LinkDev.Talabat.Infrastructure.Presistance._Common;
+using LinkDev.Talabat.Infrastructure.Presistance.Common;
 using LinkDev.Talabat.Infrastructure.Presistance.Identity;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
