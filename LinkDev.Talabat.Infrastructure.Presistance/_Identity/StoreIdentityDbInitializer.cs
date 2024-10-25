@@ -2,11 +2,11 @@
 using LinkDev.Talabat.Core.Domain.Entities.Identity;
 using LinkDev.Talabat.Infrastructure.Presistance.Common;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace LinkDev.Talabat.Infrastructure.Presistance.Identity
 {
-	public sealed class StoreIdentityDbInitializer(StoreIdentityDbContext _dbContext , UserManager<ApplicationUser> _userManager) : DbInitializer(_dbContext) , IStoreIdentityDbInitializer
+    public sealed class StoreIdentityDbInitializer(StoreIdentityDbContext _dbContext , UserManager<ApplicationUser> _userManager)
+		: DbInitializer(_dbContext) , IStoreIdentityDbInitializer
 	{
 
 		public override async Task SeedAsync() // Seeds
@@ -20,7 +20,7 @@ namespace LinkDev.Talabat.Infrastructure.Presistance.Identity
 			
 			};
             /// _dbContext.Users.Add(user);	
-            /// I can create through _dbContext BUT there some steps i want to do before it like hashing Password and alot 
+            /// I can create through _dbContext Bec there some steps i want to do before it like hashing Password and alot 
 			/// so i will create by UserManager to the prerequired thing like hashing Password 
 			
             //await _userManager.CreateAsync(user);	

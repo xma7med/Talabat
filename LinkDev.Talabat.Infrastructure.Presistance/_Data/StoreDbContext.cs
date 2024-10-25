@@ -1,5 +1,5 @@
 ﻿using LinkDev.Talabat.Core.Domain.Entities.Products;
-using LinkDev.Talabat.Infrastructure.Presistance._Common;
+using LinkDev.Talabat.Infrastructure.Presistance.Common;
 using System.Reflection;
 
 namespace LinkDev.Talabat.Infrastructure.Presistance.Data

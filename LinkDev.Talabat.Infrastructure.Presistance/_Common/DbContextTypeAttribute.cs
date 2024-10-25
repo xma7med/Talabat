@@ -1,4 +1,4 @@
-﻿namespace LinkDev.Talabat.Infrastructure.Presistance._Common
+﻿namespace LinkDev.Talabat.Infrastructure.Presistance.Common
 {
     [AttributeUsage(AttributeTargets.Class)]
     public class DbContextTypeAttribute : Attribute
