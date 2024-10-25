@@ -27,8 +27,8 @@ namespace LinkDev.Talabat.Infrastructure.Presistance.Data
 			{
 				// Get Data - Path 
 				var brandsData = await File.ReadAllTextAsync("../LinkDev.Talabat.Infrastructure.Presistance/Data/Seeds/brands.json");
-				// JsonSerializer to Deserialize from json as string --> object 
-				var brands = JsonSerializer.Deserialize<List<ProductBrand>>(brandsData);
+                // JsonSerializer to Deserialize JSON as string into a .NET object
+                var brands = JsonSerializer.Deserialize<List<ProductBrand>>(brandsData);
 				if (brands?.Count > 0)
 				{
 					///foreach (var brand in brands)

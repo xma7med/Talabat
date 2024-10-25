@@ -46,12 +46,13 @@ namespace LinkDev.Talabat.APIs.Extention
 			})
 				.AddEntityFrameworkStores<StoreIdentityDbContext>();
 
-			//services.AddAuthentication("Hamada");
-			services.AddAuthentication((authenticationOption) =>
+			//services.AddAuthentication(); // By defualt it have been Called through => AddIdentity , defualt Schema 
+            //services.AddAuthentication("Hamada"); // change defualt schema with the defualt handler 
+            services.AddAuthentication((authenticationOption) =>
 			{
 				authenticationOption.DefaultAuthenticateScheme = /*"Bearer"*/ JwtBearerDefaults.AuthenticationScheme;
 				authenticationOption.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;	
-			})
+			}) // change defualt schema and Handler 
 				.AddJwtBearer((options)=>
 				{
 					options.TokenValidationParameters = new TokenValidationParameters()
@@ -65,8 +66,9 @@ namespace LinkDev.Talabat.APIs.Extention
 						ValidAudience = configuration["JWTSettings:Audience"],
 						ValidIssuer = configuration["JWTSettings:Issure"],
 						IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWTSettings:Key"]!)),
-						ClockSkew=TimeSpan.Zero,// SomeTimes After expiration token dosent expire cause of Time diff this make token xpire at the time 
-					};
+						ClockSkew=TimeSpan.Zero,// SomeTimes After expiration token dosent expire cause of diff Time Zone
+                                                // this make token expire at the time 
+                    };
 				})
 				/*.AddJwtBearer("Bearer02" , (opti) => )*/;
 			//-----------------------------------------

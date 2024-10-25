@@ -1,6 +1,9 @@
 ﻿using LinkDev.Talabat.Core.Domain.Entities.Identity;
+using LinkDev.Talabat.Infrastructure.Presistance._Common;
 using LinkDev.Talabat.Infrastructure.Presistance._Identity.Config;
+using LinkDev.Talabat.Infrastructure.Presistance.Data;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using System.Reflection;
 
 namespace LinkDev.Talabat.Infrastructure.Presistance.Identity
 {
@@ -29,10 +32,17 @@ namespace LinkDev.Talabat.Infrastructure.Presistance.Identity
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
 			base.OnModelCreating(builder);
-            // I cant  there Configs also for The BaseEntity Congfigs and i want only Configs for StoreIdentityDbContext  entities            //builder.ApplyConfigurationsFromAssembly(typeof(AssemblyInformation).Assembly); 
-            builder.ApplyConfiguration(new ApplicationUserConfigurations());
-			builder.ApplyConfiguration(new AddressConfigurations());
 
-		}
-	}
+            // I cant  there Configs also for The BaseEntity Congfigs and i want only Configs for StoreIdentityDbContext  entities            //builder.ApplyConfigurationsFromAssembly(typeof(AssemblyInformation).Assembly); 
+            /// First way 
+            //builder.ApplyConfiguration(new ApplicationUserConfigurations());
+            //builder.ApplyConfiguration(new AddressConfigurations());
+            /// Second Way More Efficient 
+            builder.ApplyConfigurationsFromAssembly(typeof(AssemblyInformation).Assembly,
+                  type => type.GetCustomAttribute<DbContextTypeAttribute>()?.DbContextType == typeof(StoreIdentityDbContext));
+
+
+
+        }
+    }
 }

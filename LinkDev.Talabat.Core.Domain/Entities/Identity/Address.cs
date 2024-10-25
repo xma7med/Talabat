@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace LinkDev.Talabat.Core.Domain.Entities.Identity
 {
+	/// maybe u ask why i dont inherit the id from BaseEntity ? 
+	// Bec i will seperate the database and make Db for security data  ( security ) 
 	public class Address
 	{
 		public int Id { get; set; }
@@ -16,11 +18,11 @@ namespace LinkDev.Talabat.Core.Domain.Entities.Identity
 		public required string Country { get; set; }
         public required string UserId { get; set; } //string bec the appuseridentyty TKey is string 
 
-		/// Any Relation by default mapped 1 to many 
-		/// Addede FK in the Required Side  
-		/// Must Add it And make Data Annotation or fluent API to make it unique (No Duplicate )
+//Any Relation by default mapped 1 to many Untill u add constarints 
+//Must Add Added FK from optional to the Required Side-> Untill now there are no constraints that forbid Duplication
+//Add Unique Constraint to forbidden duplication by make Data Annotation or fluent API to make it unique (No Duplicate )
 
-		public virtual required ApplicationUser User { get; set; } // Mandatory 
+        public virtual required ApplicationUser User { get; set; } // Mandatory 
 
     }
 }
