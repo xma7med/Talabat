@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using LinkDev.Talabat.Core.Application.Abstraction.Models.Product;
 using LinkDev.Talabat.Core.Domain.Contracts.Persistence;
 using LinkDev.Talabat.Core.Domain.Entities.Products;
+using LinkDev.Talabat.Core.Domain.Specifications.Product_Specs;
 using Microsoft.AspNetCore.Mvc;
 using Talabat.Dashboard.Helpers;
 using Talabat.Dashboard.Models;
@@ -9,6 +11,34 @@ namespace Talabat.Dashboard.Controllers
 {
     public class ProductController(IUnitOfWork _unitOfWork, IMapper _mappper) : Controller
     {
+        //public async Task<IActionResult> Index(ProductSpecParams specParams)
+        //{
+        //    var spec = new ProductWithBrandAndCategorySpecifications(specParams.Sort, specParams.BrandId, specParams.CategoryId, specParams.PageSize, specParams.PageIndex, specParams.Search);
+
+        //    var products = await _unitOfWork.GetRepository<Product, int>().GetAllWithSpecAsync(spec);
+
+        //    var total = await _unitOfWork.GetRepository<Product, int>().GetCountAsync(new ProductWithBrandAndCategorySpecifications(
+        //        specParams.Sort, specParams.BrandId, specParams.CategoryId, int.MaxValue, 1, specParams.Search
+        //    ));
+
+        //    var mappedProducts = _mappper.Map<IEnumerable<Product>, IEnumerable<ProductViewModel>>(products);
+
+        //    var viewModel = new PaginatedProductViewModel
+        //    {
+        //        Products = mappedProducts,
+        //        PageIndex = specParams.PageIndex,
+        //        PageSize = specParams.PageSize,
+        //        TotalCount = total
+        //    };
+
+        //    return View(viewModel);
+        //}
+
+
+
+        //-------------------------------------------------------------------------------------------------
+
+
         [HttpGet]
         public async Task<IActionResult> Index()
         {

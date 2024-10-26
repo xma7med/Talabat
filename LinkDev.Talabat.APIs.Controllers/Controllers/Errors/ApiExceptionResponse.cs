@@ -1,4 +1,6 @@
-﻿namespace LinkDev.Talabat.APIs.Controllers.Controllers.Errors
+﻿using System.Text.Json;
+
+namespace LinkDev.Talabat.APIs.Controllers.Controllers.Errors
 {
 
 	// for Handle Server Error = Exception
@@ -13,7 +15,8 @@
             Details= details;
         }
 
+        public override string ToString() => JsonSerializer.Serialize(this, new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
 
-		
-	}
+
+    }
 }

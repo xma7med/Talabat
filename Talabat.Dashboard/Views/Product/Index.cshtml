@@ -1,4 +1,57 @@
-﻿@model IEnumerable<ProductViewModel>
+﻿@* @model PaginatedProductViewModel
+<!-- Pagination Controls -->
+<nav aria-label="Page navigation example">
+	<ul class="pagination justify-content-center">
+		@if (Model.HasPreviousPage)
+		{
+			<li class="page-item">
+				<a class="page-link" asp-action="Index" asp-route-pageIndex="@(Model.PageIndex - 1)" aria-label="Previous">
+					<span aria-hidden="true">&laquo;</span>
+				</a>
+			</li>
+		}
+		else
+		{
+			<li class="page-item disabled">
+				<a class="page-link" href="#" aria-label="Previous">
+					<span aria-hidden="true">&laquo;</span>
+				</a>
+			</li>
+		}
+
+		@for (var i = 1; i <= Model.TotalPages; i++)
+		{
+			<li class="page-item @(i == Model.PageIndex ? "active" : "")">
+				<a class="page-link" asp-action="Index" asp-route-pageIndex="@i">@i</a>
+			</li>
+		}
+
+		@if (Model.HasNextPage)
+		{
+			<li class="page-item">
+				<a class="page-link" asp-action="Index" asp-route-pageIndex="@(Model.PageIndex + 1)" aria-label="Next">
+					<span aria-hidden="true">&raquo;</span>
+				</a>
+			</li>
+		}
+		else
+		{
+			<li class="page-item disabled">
+				<a class="page-link" href="#" aria-label="Next">
+					<span aria-hidden="true">&raquo;</span>
+				</a>
+			</li>
+		}
+	</ul>
+</nav>
+	</div> *@
+
+
+
+
+
+
+@model IEnumerable<ProductViewModel>
 @{
 	ViewData["Title"] = "All Products";
 }
