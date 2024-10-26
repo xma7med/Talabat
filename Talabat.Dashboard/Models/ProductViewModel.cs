@@ -17,9 +17,9 @@ namespace Talabat.Dashboard.Models
         public decimal Price { get; set; }
         [Required(ErrorMessage = "Product Category Id Is Required!!")]
         public int ProductCategoryId { get; set; }
-        public ProductCategory? ProductCategory { get; set; }
+        public ProductCategory? Category { get; set; }
         [Required(ErrorMessage = "Product Brand Id Is Required!!")]
         public int ProductBrandeId { get; set; }
-        public ProductBrand? ProductBrand { get; set; }
+        public ProductBrand? Brand { get; set; }
     }
 }

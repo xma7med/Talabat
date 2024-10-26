@@ -9,6 +9,7 @@ namespace Talabat.Dashboard.Helpers
         public MapsProfile()
         {
             CreateMap<Product , ProductViewModel>().ReverseMap();   
+            CreateMap<ProductBrandViewModel, ProductBrand>().ReverseMap();   
         }
     }
 }
