@@ -145,7 +145,8 @@ namespace LinkDev.Talabat.APIs
 
 			app.UseHttpsRedirection();
 
-			app.UseStatusCodePagesWithReExecute("/Errors/{0}");
+			app.UseStatusCodePagesWithReExecute("/Errors/{0}"); // middlware for not fount , bad , unAut - when status code not 200
+			// will return the req and execute this endpoint 
 
 			app.UseAuthentication();
 			app.UseAuthorization();

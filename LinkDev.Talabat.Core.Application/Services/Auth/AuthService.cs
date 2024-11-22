@@ -3,6 +3,7 @@ using LinkDev.Talabat.Core.Application.Abstraction.Services.Auth;
 using LinkDev.Talabat.Core.Application.Exception;
 using LinkDev.Talabat.Core.Domain.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -11,7 +12,8 @@ using System.Text;
 
 namespace LinkDev.Talabat.Core.Application.Services.Auth
 {
-	public class AuthService (  
+	public class AuthService ( 
+		IConfiguration configuration,
 		IOptions<JwtSetings> jwtSettings ,
 		UserManager<ApplicationUser> userManager , 
 		SignInManager<ApplicationUser> signInManager): IAuthService
@@ -100,7 +102,7 @@ namespace LinkDev.Talabat.Core.Application.Services.Auth
 			var tokenObj = new JwtSecurityToken(
 				/// Payload
 				// first pass the register Claims
-				issuer: _jwtSettings.Issuer,	
+				issuer: /*configuration["JWTSettings:Issuer"]*/ _jwtSettings.Issuer,	
 				audience:_jwtSettings.Audience,
 				expires:DateTime.UtcNow.AddMinutes(_jwtSettings.DurationInMinutes),
 				// My Claims

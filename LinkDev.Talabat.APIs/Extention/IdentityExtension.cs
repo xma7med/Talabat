@@ -61,11 +61,30 @@ namespace LinkDev.Talabat.APIs.Extention
 
 
 						ValidAudience = configuration["JWTSettings:Audience"],
-						ValidIssuer = configuration["JWTSettings:Issure"],
+						ValidIssuer = configuration["JWTSettings:Issuer"],
 						IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWTSettings:Key"]!)),
 						ClockSkew=TimeSpan.Zero,// SomeTimes After expiration token dosent expire cause of diff Time Zone
                                                 // this make token expire at the time 
                     };
+					/// Add event handlers to log token validation issues
+					///options.Events = new JwtBearerEvents
+					///{
+					///	OnAuthenticationFailed = context =>
+					///	{
+					///		Console.WriteLine("Authentication failed:", context.Exception.Message);
+					///		return Task.CompletedTask;
+					///	},
+					///	OnTokenValidated = context =>
+					///	{
+					///		Console.WriteLine("Token validated successfully");
+					///		return Task.CompletedTask;
+					///	},
+					///	OnMessageReceived = context =>
+					///	{
+					///		Console.WriteLine("Token received: " + context.Token);
+					///		return Task.CompletedTask;
+					///	}
+					///};
 				})
 				/*.AddJwtBearer("Bearer02" , (opti) => )*/;
 			//-----------------------------------------

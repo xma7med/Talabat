@@ -12,7 +12,8 @@ namespace LinkDev.Talabat.APIs.Middlewares
 		private readonly ILogger<ExceptionHandlerMiddleware> _logger;
 		private readonly IWebHostEnvironment _env;
 
-		public ExceptionHandlerMiddleware(RequestDelegate next , ILogger<ExceptionHandlerMiddleware> logger , IWebHostEnvironment env )
+		public ExceptionHandlerMiddleware(RequestDelegate next/*Delegate To the next Middleware*/ 
+			, ILogger<ExceptionHandlerMiddleware> logger , IWebHostEnvironment env )
         {
 			_next = next;
 			_logger = logger;
@@ -28,12 +29,12 @@ namespace LinkDev.Talabat.APIs.Middlewares
 				await _next(httpContext);
 
 				// Logic Executed with the  Response 
-
-				//if (httpContext.Response.StatusCode == (int)HttpStatusCode.NotFound)
-				//{
-				//	var response = new ApiResponse((int)HttpStatusCode.NotFound, $"The requested endpoint {httpContext.Request.Path}  not found.");
-				//	await httpContext.Response.WriteAsync(response.ToString());
-				//}
+				// one way to handle => not found - bad - UnAuth But i used the .net middleware [ app.UseStatusCodePagesWithReExecute("/Errors/{0}"); ]
+				///if (httpContext.Response.StatusCode == (int)HttpStatusCode.NotFound)
+				///{
+				///	var response = new ApiResponse((int)HttpStatusCode.NotFound, $"The requested endpoint {httpContext.Request.Path}  not found.");
+				///	await httpContext.Response.WriteAsync(response.ToString());
+				///}
 
 
 			}
