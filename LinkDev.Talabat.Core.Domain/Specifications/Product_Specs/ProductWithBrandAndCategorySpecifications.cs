@@ -25,12 +25,16 @@ namespace LinkDev.Talabat.Core.Domain.Specifications.Product_Specs
 			//{
 
 			//   Oreder By 
+
 				switch (sort)
 				{
 					case "nameDesc":
 						AddOrderByDesc(P => P.Name);
-						break;	
-					case "priceAsc":
+						break;
+				    case "nameAesc":
+					    AddOrderBy(P => P.Name);
+				    	break;
+				    case "priceAsc":
 						AddOrderBy(P => P.Price);
 						//OrderBy = P => P.Price;
 						break;
@@ -38,7 +42,7 @@ namespace LinkDev.Talabat.Core.Domain.Specifications.Product_Specs
 						AddOrderByDesc(P => P.Description);
 						break;
 					default:
-					AddOrderBy(P => P.Name); // Change the default sorting 
+					AddOrderBy(P => P.Id); // Change the default sorting 
 					break;
 				}
 			//}

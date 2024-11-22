@@ -13,6 +13,7 @@ namespace LinkDev.Talabat.Core.Application.Services.Products
 	// INJECT MAPPER  - Allow DI for IMapper 
 	internal class ProductService(IUnitOfWork unitofWork, IMapper mapper) : IProductService
 	{
+
 		//                                                            specParams= sort, brandId , categoryId
 		public async Task<Pagination<ProductToReturnDto>> GetProductsAsync(ProductSpecParams specParams)
 		{

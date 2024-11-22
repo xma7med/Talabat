@@ -12,7 +12,8 @@ namespace LinkDev.Talabat.APIs.Middlewares
 		private readonly ILogger<ExceptionHandlerMiddleware> _logger;
 		private readonly IWebHostEnvironment _env;
 
-		public ExceptionHandlerMiddleware(RequestDelegate next , ILogger<ExceptionHandlerMiddleware> logger , IWebHostEnvironment env )
+		public ExceptionHandlerMiddleware(RequestDelegate next/*Delegate To the next Middleware*/ 
+			, ILogger<ExceptionHandlerMiddleware> logger , IWebHostEnvironment env )
         {
 			_next = next;
 			_logger = logger;
@@ -28,12 +29,12 @@ namespace LinkDev.Talabat.APIs.Middlewares
 				await _next(httpContext);
 
 				// Logic Executed with the  Response 
-
-				//if (httpContext.Response.StatusCode == (int)HttpStatusCode.NotFound)
-				//{
-				//	var response = new ApiResponse((int)HttpStatusCode.NotFound, $"The requested endpoint {httpContext.Request.Path}  not found.");
-				//	await httpContext.Response.WriteAsync(response.ToString());
-				//}
+				// one way to handle => not found - bad - UnAuth But i used the .net middleware [ app.UseStatusCodePagesWithReExecute("/Errors/{0}"); ]
+				///if (httpContext.Response.StatusCode == (int)HttpStatusCode.NotFound)
+				///{
+				///	var response = new ApiResponse((int)HttpStatusCode.NotFound, $"The requested endpoint {httpContext.Request.Path}  not found.");
+				///	await httpContext.Response.WriteAsync(response.ToString());
+				///}
 
 
 			}
@@ -73,10 +74,25 @@ namespace LinkDev.Talabat.APIs.Middlewares
 
 					await httpContext.Response.WriteAsync(response.ToString()); // Serilizing to turn it to JSON 
 					break;
-				case BadRequestException:
+
+                case ValidationException:
+                    httpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    httpContext.Response.ContentType = "application/json";
+                    response = new ApiResponse((int)HttpStatusCode.BadRequest, ex.Message);
+                    await httpContext.Response.WriteAsync(response.ToString());
+                    break;
+                    
+                case BadRequestException:
 					httpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
 					httpContext.Response.ContentType = "application/json";
 					response = new ApiResponse(400, ex.Message);
+
+					await httpContext.Response.WriteAsync(response.ToString());
+					break;
+				case UnAuthorizedException:
+					httpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+					httpContext.Response.ContentType = "application/json";
+					response = new ApiResponse(401, ex.Message);
 
 					await httpContext.Response.WriteAsync(response.ToString());
 					break;
