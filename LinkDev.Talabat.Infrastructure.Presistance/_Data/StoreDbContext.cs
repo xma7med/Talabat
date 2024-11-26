@@ -1,4 +1,5 @@
-﻿using LinkDev.Talabat.Core.Domain.Entities.Products;
+﻿using LinkDev.Talabat.Core.Domain.Entities.Orders;
+using LinkDev.Talabat.Core.Domain.Entities.Products;
 using LinkDev.Talabat.Infrastructure.Presistance.Common;
 using System.Reflection;
 
@@ -49,5 +50,10 @@ namespace LinkDev.Talabat.Infrastructure.Presistance.Data
 
         public DbSet<ProductBrand> Brands { get; set; }
         public DbSet<ProductCategory> Categories { get; set; }
+
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<DeliveryMethod> DeliveryMethods { get; set; }
+
     }
 }
