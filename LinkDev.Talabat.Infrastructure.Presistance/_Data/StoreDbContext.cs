@@ -22,7 +22,7 @@ namespace LinkDev.Talabat.Infrastructure.Presistance.Data
 
             /// Second Way 
              modelBuilder.ApplyConfigurationsFromAssembly(typeof(AssemblyInformation).Assembly,
-               type => type.GetCustomAttribute<DbContextTypeAttribute>()?.DbContextType==typeof(StoreDbContext));
+               type => type.GetCustomAttribute<DbContextTypeAttribute>()?.DbContextType == typeof(StoreDbContext));
 
 
         }
