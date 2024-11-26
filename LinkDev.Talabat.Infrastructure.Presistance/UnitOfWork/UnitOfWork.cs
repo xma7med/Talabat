@@ -21,7 +21,7 @@ namespace LinkDev.Talabat.Infrastructure.Presistance.UnitOfWork
 		}
 
         public IGenericRepository<TEntity, Tkey> GetRepository<TEntity, Tkey>()
-			where TEntity : BaseAuditableEntity<Tkey>
+			where TEntity : BaseEntity<Tkey>
 			where Tkey : IEquatable<Tkey>
 		{
 			///1- هتبقى مشكله لو نادى ع الميثود اكتر من مره بنفس التايب هيعمله اكتر من اوبجكت
