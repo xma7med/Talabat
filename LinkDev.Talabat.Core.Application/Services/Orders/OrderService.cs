@@ -80,12 +80,13 @@ namespace LinkDev.Talabat.Core.Application.Services.Orders
 
         }
 
+
         public async Task<IEnumerable<OrderToReturnDto>> GetOrdersForUserAsync(string buyerEmail)
         {
-            var orderSpecs= new OrderSpecifications(buyerEmail);
-            var orders = await unitOfWork.GetRepository<Order,int >().GetWithSpecAsync(orderSpecs);   
+            var orderSpecs = new OrderSpecifications(buyerEmail);
+            var orders = await unitOfWork.GetRepository<Order, int>().GetWithSpecAsync(orderSpecs);
 
-            return mapper.Map<IEnumerable <OrderToReturnDto>>(orders);
+            return mapper.Map<IEnumerable<OrderToReturnDto>>(orders);
         }
 
         public async Task<OrderToReturnDto> GetOrderByIdAsync(string buyerEmail, int orderId)
@@ -97,13 +98,13 @@ namespace LinkDev.Talabat.Core.Application.Services.Orders
             var order = await unitOfWork.GetRepository<Order, int>().GetWithSpecAsync(orderSpecs);
 
             // null if not found or not this email order
-            if (order is null ) throw new NotFoundException(nameof(Order) , orderId);   
+            if (order is null) throw new NotFoundException(nameof(Order), orderId);
             return mapper.Map<OrderToReturnDto>(order);
         }
 
         public async Task<IEnumerable<DeliveryMethodDto>> GetDeliveryMethodAsync()
         {
-            var deliveryMethods = await unitOfWork.GetRepository<DeliveryMethod,int>().GetAllAsync(); 
+            var deliveryMethods = await unitOfWork.GetRepository<DeliveryMethod, int>().GetAllAsync();
 
             return mapper.Map<IEnumerable<DeliveryMethodDto>>(deliveryMethods);
         }
