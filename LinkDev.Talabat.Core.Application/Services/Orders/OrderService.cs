@@ -55,11 +55,14 @@ namespace LinkDev.Talabat.Core.Application.Services.Orders
             
             var subTotal = orderItems.Sum(item  => item.Price * item.Quantity); // Aggregation 
 
-            // ++ Map Address 
+            // 4. Map Address 
 
             var address = mapper.Map<Address>(order.ShippingAddress);
 
-            // 4. Create Order
+            // 5. Get Delivery Method 
+            var deliveryMethod = await unitOfWork.GetRepository<DeliveryMethod, int>().GetAsync(order.DeliveryMethodId);
+
+            // 6. Create Order
 
             var orderToCreate = new Order()
             { 
@@ -67,12 +70,12 @@ namespace LinkDev.Talabat.Core.Application.Services.Orders
                 ShippingAddress = address,  
                 Items = orderItems,
                 Subtotal = subTotal,    
-                DeliveryMethodId =order.DeliveryMethodId,
+                DeliveryMethod = deliveryMethod,
             };
 
             await unitOfWork.GetRepository<Order , int >().AddAsync(orderToCreate);
 
-            // 5. Save To Database
+            // 7. Save To Database
 
             var created = await unitOfWork.CompleteAsync() > 0;
             if (!created) throw new  BadRequestException("an error occured during creating order ");

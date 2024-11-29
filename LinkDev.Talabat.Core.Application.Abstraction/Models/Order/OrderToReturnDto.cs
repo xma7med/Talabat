@@ -9,11 +9,11 @@ namespace LinkDev.Talabat.Core.Application.Abstraction.Models.Order
         public required string BuyerEmail { get; set; } 
         public DateTime OrderDate { get; set; }
         public required string  Status { get; set; } 
-        public required AddressDto ShippingAddress { get; set; }
+        public  AddressDto ShippingAddress { get; set; }
         public int? DeliveryMethodId { get; set; }
         // i need to return just name 
         public  string ? DeliveryMethod { get; set; }
-        public  ICollection<OrderItemDto> Items { get; set; }
+        public  ICollection<OrderItemDto> Items { get; set; } = new HashSet<OrderItemDto>();
         public decimal Subtotal { get; set; }
         // Will read from [  GetTotal() ]
         public decimal Total { get; set; }

@@ -16,11 +16,11 @@ namespace LinkDev.Talabat.Infrastructure.Presistance.Interceptors
 	// Override SaveChangesAsync(SaveChangesCompletedEventData eventData, int result, CancellationToken cancellationToken = default)
 	// private method
 	// Call method in SaveChanges 
-	public class BaseEntityAuditableInterceptor : SaveChangesInterceptor
+	public class CustomSaveChangesInterceptor : SaveChangesInterceptor
 	{
 		private readonly ILoggedInUserService _loggedInUserService;
 
-		public BaseEntityAuditableInterceptor(ILoggedInUserService loggedInUserService)
+		public CustomSaveChangesInterceptor(ILoggedInUserService loggedInUserService)
         {
 			_loggedInUserService = loggedInUserService;
 		}

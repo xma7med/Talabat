@@ -24,7 +24,7 @@ namespace LinkDev.Talabat.Infrastructure.Presistance
 			//services.AddScoped<IStoreDbIntializer, StoreDbInitializer>();
 			services.AddScoped(typeof(IStoreDbIntializer), typeof(StoreDbInitializer));
 
-			services.AddScoped(typeof(ISaveChangesInterceptor), typeof(BaseEntityAuditableInterceptor));
+			//services.AddScoped(typeof(ISaveChangesInterceptor), typeof(CustomSaveChangesInterceptor));
 
 			#endregion
 

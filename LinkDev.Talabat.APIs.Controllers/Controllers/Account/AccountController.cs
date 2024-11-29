@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace LinkDev.Talabat.APIs.Controllers.Controllers.Account
 {
-	public class AccountController(IServiceManager serviceManager ) : ApiControllerBase
+	public class AccountController(IServiceManager serviceManager ) : BaseApiController
 	{
 		[HttpPost("login")] // POST : /api/account/login
 		public async Task<ActionResult<UserDto>> Login(LoginDto model)
