@@ -21,9 +21,22 @@ namespace LinkDev.Talabat.Core.Application.Services.Auth
 
 		private readonly JwtSetings _jwtSettings =jwtSettings.Value;
 
-		// Check If User Exist 
-		// Check If Pass Is Valid 
-		public async Task<UserDto> LoginAsync(LoginDto model)
+        public async Task<UserDto> CurrentUser(ClaimsPrincipal claimsPrincipal)
+        {
+            var email = claimsPrincipal.FindFirstValue(ClaimTypes.Email);
+            var user = await userManager.FindByEmailAsync(email!);
+            return new UserDto()
+            {
+                Id = user!.Id,
+                DisplayName = user.DisplayName,
+                Email = user.Email!,
+                Token = await GenerateTokenAsync(user)
+            };
+        }
+
+        // Check If User Exist 
+        // Check If Pass Is Valid 
+        public async Task<UserDto> LoginAsync(LoginDto model)
 		{
 			var user = await userManager.FindByEmailAsync(model.Email);
 			if (user is null) throw new UnAuthorizedException("Invalid Login");
