@@ -6,12 +6,12 @@
 	{
 
 
-		public string CreatedBy { get; set; } = null!; // 3 way will use inspector 
+		public string? CreatedBy { get; set; } = null!; // 3 way will use inspector 
 
-        public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
+        public DateTime? CreatedOn { get; set; } = DateTime.UtcNow;
 
-		public string  LastModifiedBy { get; set; } = null!;
-        public  DateTime LastModifiedOn { get; set; } = DateTime.UtcNow;
+		public string?  LastModifiedBy { get; set; } = null!;
+        public  DateTime? LastModifiedOn { get; set; } = DateTime.UtcNow;
 
 	}
 }
