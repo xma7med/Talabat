@@ -65,7 +65,10 @@ namespace LinkDev.Talabat.Core.Application.Services.Auth
 			return addressDto;
 				
         }
-
+        public async Task<bool> EmailExists(string Email)
+        {
+            return await userManager.FindByEmailAsync(Email!) is not null;
+        }
         // Check If User Exist 
         // Check If Pass Is Valid 
         public async Task<UserDto> LoginAsync(LoginDto model)
@@ -93,7 +96,10 @@ namespace LinkDev.Talabat.Core.Application.Services.Auth
         // if not valid there are [ Automatic Model Validation with [ApiController] ] intercept the req and if not valid will not enter the end point 
         public async Task<UserDto> RegisterAsync(RegisterDto model)
 		{
-			var user = new ApplicationUser()
+
+            //  .Result => because it work async and  i need the result first 
+            if (EmailExists(model.Email).Result) throw new BadRequestException("This Email is Already Been Used");
+            var user = new ApplicationUser()
 			{
 				DisplayName = model.DisplayName,
 				Email = model.Email,

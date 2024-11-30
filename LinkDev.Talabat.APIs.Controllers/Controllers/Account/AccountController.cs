@@ -49,5 +49,12 @@ namespace LinkDev.Talabat.APIs.Controllers.Controllers.Account
 
 
 
+        [HttpGet("emailExist")] // GET : /api/account/emailExist?email=xma7med@gmail.com
+        public async Task<ActionResult<bool>> CheckEmailExist(string email)
+        {
+            var Result = await serviceManager.AuthService.EmailExists(email);
+            return Ok(Result);
+        }
+
     }
 }
