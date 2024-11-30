@@ -38,14 +38,32 @@ namespace LinkDev.Talabat.Core.Application.Services.Auth
             };
         }
 
-        public async Task<AddressDto> GetUserAddressAsync(ClaimsPrincipal claimsPrincipal)
+        public async Task<AddressDto?> GetUserAddressAsync(ClaimsPrincipal claimsPrincipal)
         {
             //var email = claimsPrincipal.FindFirstValue(ClaimTypes.Email)!;
             /// FindFirstValue => by default not include Navigation Prperty [ make Extention method like it to include navigation property ] 
 			//var user = await userManager.FindByEmailAsync(email);
-			var user = await userManager.FindUserWithAddress(claimsPrincipal);
+			var user = await userManager.FindUserWithAddressAsync(claimsPrincipal);
 			var address = mapper.Map<AddressDto>(user!.Address);
 			return address;
+        }
+        public async Task<AddressDto?> UpdatedUserAddressAsync(ClaimsPrincipal claimsPrincipal, AddressDto addressDto)
+        {
+			var updatedAddress = mapper.Map<Address>(addressDto);
+			var user = await userManager.FindUserWithAddressAsync(claimsPrincipal);
+
+			/// Make sure that will update the existing user address - To not add another address 
+			if (user!.Address is not null)
+			{
+				updatedAddress.Id = user.Address.Id;
+			}
+
+			user.Address= updatedAddress;
+
+			var result = await userManager.UpdateAsync(user);
+			if (!result.Succeeded) throw new BadRequestException(result.Errors.Select(error => error.Description).Aggregate((X, Y) => $"{X} , {Y}"));
+			return addressDto;
+				
         }
 
         // Check If User Exist 
@@ -98,11 +116,12 @@ namespace LinkDev.Talabat.Core.Application.Services.Auth
 			return response;
 		}
 
-		// implemnting generate token 
-		// step 1 : private method take the user to be generate token to him 
-		// token => 1) header - 2) payload[registered / public for Auth & private for Info Exchange ] - 3) signature 
-		//
-		private async Task<string> GenerateTokenAsync(ApplicationUser user)
+
+        // implemnting generate token 
+        // step 1 : private method take the user to be generate token to him 
+        // token => 1) header - 2) payload[registered / public for Auth & private for Info Exchange ] - 3) signature 
+        //
+        private async Task<string> GenerateTokenAsync(ApplicationUser user)
 		{   /// payloda - claims [ Public - Private claims for info excchange]
 			// public Claims 
 

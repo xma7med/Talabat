@@ -12,7 +12,7 @@ namespace LinkDev.Talabat.Core.Application.Extention
 {
     internal static  class UserManagerExyention
     {
-        public static async Task<ApplicationUser?> FindUserWithAddress(this UserManager<ApplicationUser> userManager , ClaimsPrincipal claimsPrincipal)
+        public static async Task<ApplicationUser?> FindUserWithAddressAsync(this UserManager<ApplicationUser> userManager , ClaimsPrincipal claimsPrincipal)
         { 
             var email = claimsPrincipal.FindFirstValue(ClaimTypes.Email);
             var user = await userManager.Users.Where(user => user.Email == email).Include(user => user.Address).FirstOrDefaultAsync();

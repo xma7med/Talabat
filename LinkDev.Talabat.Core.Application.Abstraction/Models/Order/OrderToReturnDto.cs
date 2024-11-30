@@ -9,7 +9,7 @@ namespace LinkDev.Talabat.Core.Application.Abstraction.Models.Order
         public required string BuyerEmail { get; set; } 
         public DateTime OrderDate { get; set; }
         public required string  Status { get; set; } 
-        public  AddressDto ShippingAddress { get; set; }
+        public required AddressDto ShippingAddress { get; set; }
         public int? DeliveryMethodId { get; set; }
         // i need to return just name 
         public  string ? DeliveryMethod { get; set; }

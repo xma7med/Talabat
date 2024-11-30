@@ -20,7 +20,7 @@ namespace LinkDev.Talabat.Core.Application
 			services.AddAutoMapper(typeof(MappingProfile)); // 1
 															//services.AddAutoMapper(typeof(MappingProfile).Assembly); // 2- if u have more than one profile Get All Profiles Inherit from profile in all project  
 															//services.AddAutoMapper(M => M.AddProfile<MappingProfile>());// 3 same like 1 create obj from MappingProfile using Parameter less Constructor 
-			services.AddAutoMapper(Mapper => Mapper.AddProfile(new MappingProfile() )); // 4 if i want send smth in the cons 
+			services.AddAutoMapper(Mapper => Mapper.AddProfile(new MappingProfile())); // 4 if i want send smth in the cons 
 
 			//*************************************************
 			//services.AddScoped(typeof(IProductService) , typeof(ProducService)); I dont need bec i make the obj bymyself in The service manger .. 
