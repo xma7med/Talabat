@@ -1,5 +1,6 @@
-﻿using LinkDev.Talabat.Core.Application.Abstraction.Models.Auth;
+﻿using LinkDev.Talabat.Core.Application.Abstraction.Models.Common;
 using LinkDev.Talabat.Core.Application.Abstraction.Services.Auth;
+using LinkDev.Talabat.Core.Application.Abstraction.Models.Auth;
 using LinkDev.Talabat.Core.Application.Exception;
 using LinkDev.Talabat.Core.Domain.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
@@ -9,11 +10,14 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using AutoMapper;
+using LinkDev.Talabat.Core.Application.Extention;
 
 namespace LinkDev.Talabat.Core.Application.Services.Auth
 {
 	public class AuthService ( 
-		IConfiguration configuration,
+		IMapper mapper ,
+		IConfiguration configuration ,
 		IOptions<JwtSetings> jwtSettings ,
 		UserManager<ApplicationUser> userManager , 
 		SignInManager<ApplicationUser> signInManager): IAuthService
@@ -32,6 +36,16 @@ namespace LinkDev.Talabat.Core.Application.Services.Auth
                 Email = user.Email!,
                 Token = await GenerateTokenAsync(user)
             };
+        }
+
+        public async Task<AddressDto> GetUserAddressAsync(ClaimsPrincipal claimsPrincipal)
+        {
+            //var email = claimsPrincipal.FindFirstValue(ClaimTypes.Email)!;
+            /// FindFirstValue => by default not include Navigation Prperty [ make Extention method like it to include navigation property ] 
+			//var user = await userManager.FindByEmailAsync(email);
+			var user = await userManager.FindUserWithAddress(claimsPrincipal);
+			var address = mapper.Map<AddressDto>(user!.Address);
+			return address;
         }
 
         // Check If User Exist 

@@ -1,8 +1,10 @@
 ﻿using LinkDev.Talabat.Core.Application.Abstraction;
+using LinkDev.Talabat.Core.Application.Abstraction.Services.Auth;
 using LinkDev.Talabat.Core.Application.Abstraction.Services.Basket;
 using LinkDev.Talabat.Core.Application.Abstraction.Services.Orders;
 using LinkDev.Talabat.Core.Application.Mapping;
 using LinkDev.Talabat.Core.Application.Services;
+using LinkDev.Talabat.Core.Application.Services.Auth;
 using LinkDev.Talabat.Core.Application.Services.Basket;
 using LinkDev.Talabat.Core.Application.Services.Orders;
 using Microsoft.Extensions.DependencyInjection;
@@ -48,6 +50,18 @@ namespace LinkDev.Talabat.Core.Application
             {
                 return () => serviceProvider.GetRequiredService<IOrderService>();
             });
+
+
+            services.AddScoped(typeof(IAuthService), typeof(AuthService));
+            services.AddScoped(typeof(Func<IAuthService>), serviceProvider =>
+            {
+				//var jwtSetting = serviceProvider.GetRequiredService<IOptions<JwtSettings>>();
+                //var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+                //var sininManager = serviceProvider.GetRequiredService<SignInManager<ApplicationUser>>();
+                //return () => new AuthService(jwtSetting, userManager,sininManager);
+                return () => serviceProvider.GetRequiredService<IAuthService>();
+            });
+
 
             return services;
 		}

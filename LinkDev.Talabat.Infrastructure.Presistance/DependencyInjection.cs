@@ -3,7 +3,6 @@ using LinkDev.Talabat.Core.Domain.Contracts.Persistence.DbInitializers;
 using LinkDev.Talabat.Infrastructure.Presistance.Data;
 using LinkDev.Talabat.Infrastructure.Presistance.Identity;
 using LinkDev.Talabat.Infrastructure.Presistance.Interceptors;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

@@ -19,17 +19,20 @@ namespace LinkDev.Talabat.APIs.Controllers.Controllers.Orders
             return Ok( result );    
         }
 
+
+        #region To Be Fixed (Mapping Issue )
         [HttpGet] // POST : /api/Orders
         public async Task<ActionResult<IEnumerable<OrderToReturnDto>>> GetOrdersForUser()
         {
             var buyerEmail = User.FindFirstValue(ClaimTypes.Email);
-            var result = await serviceManager.OrderService.GetOrdersForUserAsync( buyerEmail! );    
-            return Ok( result );
+            var result = await serviceManager.OrderService.GetOrdersForUserAsync(buyerEmail!);
+            return Ok(result);
         }
 
 
-        [HttpGet("{id}")]   // POST : /api/Orders/id
+        #endregion
 
+        [HttpGet("{id}")]   // POST : /api/Orders/id
         public async Task<ActionResult<OrderToReturnDto>> GetOrder(int id)
         {
             var buyerEmail = User.FindFirstValue(ClaimTypes.Email);
