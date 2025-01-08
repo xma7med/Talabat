@@ -7,155 +7,200 @@ using LinkDev.Talabat.Core.Application.Abstraction;
 using LinkDev.Talabat.Infrastructure;
 using LinkDev.Talabat.Infrastructure.Presistance;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace LinkDev.Talabat.APIs
 {
 	public class Program
 	{
 		public static async Task Main(string[] args)
-		{ 
+		{
 
-			/// the builder to build ASP.NET Core App
-			var webApplicationbuilder = WebApplication.CreateBuilder(args);
-
-			#region Confgure Services 
-			// Add services to the container.
-
-			webApplicationbuilder.Services.AddControllers() //Register Required Services by ASP.NET Core --> Web APIs To DI Container 
-										 .ConfigureApiBehaviorOptions(options =>
-										 {
-											 /// 2.1 Second Way to Handle Validation Exceptions By Configuring The Factory That Generate The Validation Response
-											 ///  modifying the ApiBehaviorOptions
-											 options.SuppressModelStateInvalidFilter = false ;// false = On  true = Off  ==> The Default Action Filter Come from [ApiControoller]
-											 options.InvalidModelStateResponseFactory = (actionContext) =>
-											 {
-												 var errors = actionContext.ModelState.Where(P => P.Value!.Errors.Count > 0)
-																		.Select(P => new ApiValidationErrorResponse.ValidationError() 
-																		{
-																			Field =P.Key,
-																			Errors = P.Value!.Errors.Select(E => E.ErrorMessage)
-																		});
-																		//.SelectMany(P => P.Value!.Errors) // Bec every Parameter have many Error ( object )
-																		//.Select(E => E.ErrorMessage);
-												 return new BadRequestObjectResult(new ApiValidationErrorResponse()
-												 {
-													 Errors = errors
-												 });
-											 };
-										 }) 
-										 .AddApplicationPart(typeof(Controllers.AssemblyInformation).Assembly);
-			// 2.2 Second Way to Handle Validation Exceptions By Configuring The Factory That Generate The Validation Response
-			///webApplicationbuilder.Services.Configure<ApiBehaviorOptions>(options =>
-			///{
-			///	/// Second Way to Handle Validation Exceptions By Configuring The Factory That Generate The Validation Response
-			///	options.SuppressModelStateInvalidFilter = false;// false = On  true = Off  ==> The Default Action Filter Come from [ApiControoller]
-			///	options.InvalidModelStateResponseFactory = (actionContext) =>
-			///	{
-			///		var errors = actionContext.ModelState.Where(P => P.Value!.Errors.Count > 0)
-			///							   .SelectMany(P => P.Value!.Errors) // Bec every Parameter have many Error ( object )
-			///							   .Select(E => E.ErrorMessage);
-			///		return new BadRequestObjectResult(new ApiValidationErrorResponse()
-			///		{
-			///			Errors = errors
-			///		});
-			///	};
-			///}
-			///	);
+			/// add json serilog configuration 
 
 
+			Log.Logger = new LoggerConfiguration()
+				.MinimumLevel.Information()
+				.WriteTo.Console()
+				//.Enrich.AtLevel( Serilog.Events.LogEventLevel.Information,)
+				//.Enrich.WithThreadId()
+				.Enrich.FromLogContext ()// method in Serilog allows you to include properties dynamically added to the log context
+										 // (via LogContext.PushProperty) in your log entries.
 
-			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-			webApplicationbuilder.Services.AddEndpointsApiExplorer();
-			webApplicationbuilder.Services.AddSwaggerGen();
+                .Enrich.WithProperty("Application Name " , "Talabat App ")
+				.WriteTo.File(@"D:\Route\Mo Route ASP.NET\Route Assignment & Demo & Projects\9 - ASP.NET Core Web API\Talabat Project\logs\TalabatLogs.txt"
+							, rollingInterval: RollingInterval.Day,
+				outputTemplate:
+                "{{ \"Timestamp\": \"{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz}\", \"Level\": \"[{Level:u3}]\", \"Message\": \"{Message:lj}\", \"Exception\": \"{Exception}\" }}{NewLine}"
+                )
+				//          .WriteTo.File(
+				//new Serilog.Formatting.Compact.CompactJsonFormatter(), // Compact JSON formatter
+				//@"D:\Route\Mo Route ASP.NET\Route Assignment & Demo & Projects\9 - ASP.NET Core Web API\Talabat Project\logs\TalabatLogs.json",
+				//rollingInterval: RollingInterval.Day )
 
-			webApplicationbuilder.Services.AddHttpContextAccessor(); // Register All required services for 	HttpContextAccessor Not Only HttpContextAccessor
-			webApplicationbuilder.Services.AddScoped(typeof(ILoggedInUserService) , typeof(LoggedInUserService));
+				.CreateLogger();
 
-
-
-			webApplicationbuilder.Services.AddApplicationServices();
-			// Register Required services for Presistance layer 
-			webApplicationbuilder.Services.AddPresistanceServices(webApplicationbuilder.Configuration); // first way
-			webApplicationbuilder.Services.AddInfrastructureServices(webApplicationbuilder.Configuration);
-			//DependencyInjection.AddPresistanceServices(webApplicationbuilder.Services , webApplicationbuilder.Configuration);	// traditional way 
-
-			webApplicationbuilder.Services.AddIdentityServices(webApplicationbuilder.Configuration);
-
-			#endregion
-
-		   var app = webApplicationbuilder.Build();
-
-
-			#region DataBase Initializer
-
-			#region Update DataBase & Data Seed -- Canceled -->  Done Refactor  
-			//using var scope = app.Services.CreateAsyncScope(); // Create Request
-			//var service = scope.ServiceProvider;
-			//var storeContextInitializer/*dbcontext*/ = service.GetRequiredService<IStoreContextIntializer/*StoreContext*/>();
-			//// Ask Run Time Enviroment for an object from "StoreContext" Services Explictly .
-			////***********************************************************************************
-			//var loggerfactory = service.GetRequiredService<ILoggerFactory>();
-			////var logger = service.GetRequiredService<ILogger<Program>>();
-			//try
-			//{
-			//	/// Refactor Done 1
-			//	/// var pendingMigrations = dbcontext.Database.GetPendingMigrations();
-			//	///
-			//	///if (pendingMigrations.Any())
-			//	///	await dbcontext.Database.MigrateAsync(); // Update-DataBase
-			//	///
-			//	/// //******************************************************************
-			//	///  // Data seed
-			//	///
-			//	///await StoreContextSeed.SeedAsync(dbcontext);
-
-			// Refactor 2 
-			//	await storeContextInitializer.InitializeAsync();	
-			//	await storeContextInitializer.SeedAsync();
-
-
-
-			//}
-			//catch (Exception ex)
-			//{
-
-			//	var logger = loggerfactory.CreateLogger<Program>();
-			//	logger.LogError(ex, "an error has been occured during applying the migration  or the data seed");
-			//} 
-			#endregion
-
-			// Add Db Initializer & Seed into extention method to WebApplicationBuilder
-			await app.InitializeDbAsync();
-
-
-
-			#endregion
-
-			#region Configure Kestral Middlewares
 			
-			app.UseMiddleware<ExceptionHandlerMiddleware>();	
-
-
-			// Configure the HTTP request pipeline.
-			if (app.Environment.IsDevelopment())
+			try
 			{
-				app.UseSwagger();
-				app.UseSwaggerUI();
+				Log.Information("Application is strated \n");
+
+				/// the builder to build ASP.NET Core App
+				var webApplicationbuilder = WebApplication.CreateBuilder(args);
+
+				#region Confgure Services 
+				webApplicationbuilder.Host.UseSerilog();
+				// Add services to the container.
+
+				webApplicationbuilder.Services.AddControllers() //Register Required Services by ASP.NET Core --> Web APIs To DI Container 
+											 .ConfigureApiBehaviorOptions(options =>
+											 {
+												 /// 2.1 Second Way to Handle Validation Exceptions By Configuring The Factory That Generate The Validation Response
+												 ///  modifying the ApiBehaviorOptions
+												 options.SuppressModelStateInvalidFilter = false;// false = On  true = Off  ==> The Default Action Filter Come from [ApiControoller]
+												 options.InvalidModelStateResponseFactory = (actionContext) =>
+												 {
+													 var errors = actionContext.ModelState.Where(P => P.Value!.Errors.Count > 0)
+																			.Select(P => new ApiValidationErrorResponse.ValidationError()
+																			{
+																				Field = P.Key,
+																				Errors = P.Value!.Errors.Select(E => E.ErrorMessage)
+																			});
+													 //.SelectMany(P => P.Value!.Errors) // Bec every Parameter have many Error ( object )
+													 //.Select(E => E.ErrorMessage);
+													 return new BadRequestObjectResult(new ApiValidationErrorResponse()
+													 {
+														 Errors = errors
+													 });
+												 };
+											 })
+											 .AddApplicationPart(typeof(Controllers.AssemblyInformation).Assembly);
+				// 2.2 Second Way to Handle Validation Exceptions By Configuring The Factory That Generate The Validation Response
+				///webApplicationbuilder.Services.Configure<ApiBehaviorOptions>(options =>
+				///{
+				///	/// Second Way to Handle Validation Exceptions By Configuring The Factory That Generate The Validation Response
+				///	options.SuppressModelStateInvalidFilter = false;// false = On  true = Off  ==> The Default Action Filter Come from [ApiControoller]
+				///	options.InvalidModelStateResponseFactory = (actionContext) =>
+				///	{
+				///		var errors = actionContext.ModelState.Where(P => P.Value!.Errors.Count > 0)
+				///							   .SelectMany(P => P.Value!.Errors) // Bec every Parameter have many Error ( object )
+				///							   .Select(E => E.ErrorMessage);
+				///		return new BadRequestObjectResult(new ApiValidationErrorResponse()
+				///		{
+				///			Errors = errors
+				///		});
+				///	};
+				///}
+				///	);
+
+
+
+				// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+				webApplicationbuilder.Services.AddEndpointsApiExplorer();
+				webApplicationbuilder.Services.AddSwaggerGen();
+
+				webApplicationbuilder.Services.AddHttpContextAccessor(); // Register All required services for 	HttpContextAccessor Not Only HttpContextAccessor
+				webApplicationbuilder.Services.AddScoped(typeof(ILoggedInUserService), typeof(LoggedInUserService));
+
+
+
+				webApplicationbuilder.Services.AddApplicationServices();
+				// Register Required services for Presistance layer 
+				webApplicationbuilder.Services.AddPresistanceServices(webApplicationbuilder.Configuration); // first way
+				webApplicationbuilder.Services.AddInfrastructureServices(webApplicationbuilder.Configuration);
+				//DependencyInjection.AddPresistanceServices(webApplicationbuilder.Services , webApplicationbuilder.Configuration);	// traditional way 
+
+				webApplicationbuilder.Services.AddIdentityServices(webApplicationbuilder.Configuration);
+
+				#endregion
+
+				var app = webApplicationbuilder.Build();
+
+
+				#region DataBase Initializer
+
+				#region Update DataBase & Data Seed -- Canceled -->  Done Refactor  
+				//using var scope = app.Services.CreateAsyncScope(); // Create Request
+				//var service = scope.ServiceProvider;
+				//var storeContextInitializer/*dbcontext*/ = service.GetRequiredService<IStoreContextIntializer/*StoreContext*/>();
+				//// Ask Run Time Enviroment for an object from "StoreContext" Services Explictly .
+				////***********************************************************************************
+				//var loggerfactory = service.GetRequiredService<ILoggerFactory>();
+				////var logger = service.GetRequiredService<ILogger<Program>>();
+				//try
+				//{
+				//	/// Refactor Done 1
+				//	/// var pendingMigrations = dbcontext.Database.GetPendingMigrations();
+				//	///
+				//	///if (pendingMigrations.Any())
+				//	///	await dbcontext.Database.MigrateAsync(); // Update-DataBase
+				//	///
+				//	/// //******************************************************************
+				//	///  // Data seed
+				//	///
+				//	///await StoreContextSeed.SeedAsync(dbcontext);
+
+				// Refactor 2 
+				//	await storeContextInitializer.InitializeAsync();	
+				//	await storeContextInitializer.SeedAsync();
+
+
+
+				//}
+				//catch (Exception ex)
+				//{
+
+				//	var logger = loggerfactory.CreateLogger<Program>();
+				//	logger.LogError(ex, "an error has been occured during applying the migration  or the data seed");
+				//} 
+				#endregion
+
+				// Add Db Initializer & Seed into extention method to WebApplicationBuilder
+				await app.InitializeDbAsync();
+
+
+
+				#endregion
+
+				#region Configure Kestral Middlewares
+
+				app.UseMiddleware<ActionNameLoggingMiddleware>();	
+
+				app.UseMiddleware<ExceptionHandlerMiddleware>();
+
+                app.UseSerilogRequestLogging();
+
+				// Configure the HTTP request pipeline.
+				if (app.Environment.IsDevelopment())
+				{
+					app.UseSwagger();
+					app.UseSwaggerUI();
+				}
+
+				app.UseHttpsRedirection();
+
+
+
+                app.UseStatusCodePagesWithReExecute("/Errors/{0}"); // middlware for not fount , bad , unAut - when status code not 200
+																	// will return the req and execute this endpoint 
+
+				app.UseAuthentication();
+				app.UseAuthorization();
+
+				app.UseStaticFiles();
+				app.MapControllers();
+				#endregion
+
+				app.Run();
 			}
-
-			app.UseHttpsRedirection();
-
-			app.UseStatusCodePagesWithReExecute("/Errors/{0}"); // middlware for not fount , bad , unAut - when status code not 200
-			// will return the req and execute this endpoint 
-
-			app.UseAuthentication();
-			app.UseAuthorization();
-
-			app.UseStaticFiles();	
-			app.MapControllers(); 
-			#endregion
-
-			app.Run();
+			catch (Exception ex) 
+			{
+				Log.Fatal(ex, "Error occured during app run ");
+			}
+			finally
+			{
+				Log.CloseAndFlush();
+			}
 
 		}
 	}
