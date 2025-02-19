@@ -8,7 +8,7 @@ namespace LinkDev.Talabat.Core.Domain.Entities.Identity
 {
 	/// maybe u ask why i dont inherit the id from BaseEntity ? 
 	// Bec i will seperate the database and make Db for security data  ( security ) 
-	public class Address
+	public class Address// the follow table التابع مش الاساسي 
 	{
 		public int Id { get; set; }
 		public required string FirstName { get; set; }
@@ -16,6 +16,7 @@ namespace LinkDev.Talabat.Core.Domain.Entities.Identity
 		public required string Street { get; set; }
 		public required string City { get; set; }
 		public required string Country { get; set; }
+		// what forbidden to have many address to user ? 1- add FK 2-Make unique constraints 
         public required string UserId { get; set; } //string bec the appuseridentyty TKey is string 
 
 //Any Relation by default mapped 1 to many Untill u add constarints 

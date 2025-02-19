@@ -1,4 +1,5 @@
 ﻿using LinkDev.Talabat.APIs.Controllers.Controllers.Base;
+using LinkDev.Talabat.APIs.Controllers.Filters;
 using LinkDev.Talabat.Core.Application.Abstraction;
 using LinkDev.Talabat.Core.Application.Abstraction.Common;
 using LinkDev.Talabat.Core.Application.Abstraction.Models.Product;
@@ -13,6 +14,7 @@ namespace LinkDev.Talabat.APIs.Controllers.Controllers.Products
 
 				  //[Authorize(AuthenticationSchemes = "Bearer")]
 		[Authorize/*(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)*/]
+		[CachedAttribute(600)]
 		[HttpGet] // Get :  /api/Products
 		public async Task<ActionResult<Pagination<ProductToReturnDto>>> GetProducts([FromQuery]ProductSpecParams specParams)
 		{ 
