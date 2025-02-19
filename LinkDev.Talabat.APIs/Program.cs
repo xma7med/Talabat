@@ -84,7 +84,7 @@ namespace LinkDev.Talabat.APIs
 			#endregion
 
 		   var app = webApplicationbuilder.Build();
-
+			                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
 
 			#region DataBase Initializer
 

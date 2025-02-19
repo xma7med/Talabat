@@ -4,16 +4,19 @@ using LinkDev.Talabat.Infrastructure.Presistance.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace LinkDev.Talabat.Infrastructure.Presistance.Data.Migrations
+namespace LinkDev.Talabat.Infrastructure.Presistance._Data.Migrations
 {
     [DbContext(typeof(StoreDbContext))]
-    partial class StoreContextModelSnapshot : ModelSnapshot
+    [Migration("20250219154333_Emp_Dept")]
+    partial class Emp_Dept
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
