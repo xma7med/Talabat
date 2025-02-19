@@ -12,6 +12,7 @@ using LinkDev.Talabat.Core.Domain.Entities.Orders;
 // Alias Name 
 using UserAddress = LinkDev.Talabat.Core.Domain.Entities.Identity.Address;
 using OrderAddress = LinkDev.Talabat.Core.Domain.Entities.Orders.Address;
+using LinkDev.Talabat.Core.Application.Abstraction.Models.Department;
 
 namespace LinkDev.Talabat.Core.Application.Mapping
 {
@@ -33,6 +34,12 @@ namespace LinkDev.Talabat.Core.Application.Mapping
 
 			CreateMap<Employee, EmployeeToReturnDto>();
 
+            CreateMap<Employee, EmployeeDto>()
+                .ForMember(dest => dest.DepartmentName, opt => opt.MapFrom(src => src.Department.Name)).ReverseMap();
+
+            CreateMap<Department, DepartmentDto>().ReverseMap();
+            CreateMap<Department, DepartmentCreateDto>().ReverseMap();
+
             CreateMap<CustomerBasket, CustomerBasketDto>().ReverseMap();
             CreateMap<BasketItem, BasketItemDto>().ReverseMap();
 
@@ -49,6 +56,8 @@ namespace LinkDev.Talabat.Core.Application.Mapping
             CreateMap<DeliveryMethod, DeliveryMethodDto>();
 
             CreateMap<UserAddress, AddressDto>().ReverseMap();
+
+
 
         }
 	}
