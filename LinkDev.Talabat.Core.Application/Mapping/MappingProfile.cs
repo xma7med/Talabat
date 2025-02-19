@@ -1,10 +1,17 @@
 ﻿using AutoMapper;
 using LinkDev.Talabat.Core.Application.Abstraction.Models.Basket;
+using LinkDev.Talabat.Core.Application.Abstraction.Models.Common;
 using LinkDev.Talabat.Core.Application.Abstraction.Models.Employee;
+using LinkDev.Talabat.Core.Application.Abstraction.Models.Order;
 using LinkDev.Talabat.Core.Application.Abstraction.Models.Product;
 using LinkDev.Talabat.Core.Domain.Entities.Basket;
 using LinkDev.Talabat.Core.Domain.Entities.Employees;
 using LinkDev.Talabat.Core.Domain.Entities.Products;
+using LinkDev.Talabat.Core.Domain.Entities.Identity;
+using LinkDev.Talabat.Core.Domain.Entities.Orders;
+// Alias Name 
+using UserAddress = LinkDev.Talabat.Core.Domain.Entities.Identity.Address;
+using OrderAddress = LinkDev.Talabat.Core.Domain.Entities.Orders.Address;
 
 namespace LinkDev.Talabat.Core.Application.Mapping
 {
@@ -27,8 +34,22 @@ namespace LinkDev.Talabat.Core.Application.Mapping
 			CreateMap<Employee, EmployeeToReturnDto>();
 
             CreateMap<CustomerBasket, CustomerBasketDto>().ReverseMap();
-            CreateMap<BasketItem, BasketItemDto>().ReverseMap();    
+            CreateMap<BasketItem, BasketItemDto>().ReverseMap();
 
-		}
+            CreateMap<Order, OrderToReturnDto>()
+                .ForMember(dest => dest.DeliveryMethod, option => option.MapFrom(src => src.DeliveryMethod!.ShortName));
+
+            CreateMap<OrderItem, OrderItemDto>()
+                .ForMember(dest => dest.ProductId, option => option.MapFrom(src => src.Product.ProductId))
+                .ForMember(dest => dest.ProductName, option => option.MapFrom(src => src.Product.ProductName))
+                .ForMember(dest => dest.PictureUrl, option => option.MapFrom<OrderItemPictureUrlResolver>());
+
+            CreateMap<OrderAddress, AddressDto>().ReverseMap();
+
+            CreateMap<DeliveryMethod, DeliveryMethodDto>();
+
+            CreateMap<UserAddress, AddressDto>().ReverseMap();
+
+        }
 	}
 }

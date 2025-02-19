@@ -16,11 +16,11 @@ namespace LinkDev.Talabat.Infrastructure.Presistance.Interceptors
 	// Override SaveChangesAsync(SaveChangesCompletedEventData eventData, int result, CancellationToken cancellationToken = default)
 	// private method
 	// Call method in SaveChanges 
-	public class BaseEntityAuditableInterceptor : SaveChangesInterceptor
+	public class AuditInterceptor : SaveChangesInterceptor
 	{
 		private readonly ILoggedInUserService _loggedInUserService;
 
-		public BaseEntityAuditableInterceptor(ILoggedInUserService loggedInUserService)
+		public AuditInterceptor(ILoggedInUserService loggedInUserService)
         {
 			_loggedInUserService = loggedInUserService;
 		}
@@ -32,20 +32,26 @@ namespace LinkDev.Talabat.Infrastructure.Presistance.Interceptors
 
 			return base.SavingChanges(eventData, result);
 		}
-		//async 
-		public override ValueTask<int> SavedChangesAsync(SaveChangesCompletedEventData eventData, int result, CancellationToken cancellationToken = default)
-		{
+        //async 
+
+        public override ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData, InterceptionResult<int> result, CancellationToken cancellationToken = default)
+        {
 			UpdateEntities(eventData.Context);
-			return base.SavedChangesAsync(eventData, result, cancellationToken);
-		}
+            return base.SavingChangesAsync(eventData, result, cancellationToken);
+        }
+        
 
 
 		private void UpdateEntities(DbContext? dbContext)
 		{
 			if (dbContext == null) return;
 
-			foreach (var entry in dbContext.ChangeTracker.Entries<BaseAuditableEntity<int>>() // Must any Entity inherit from BaseAuditableEntity Be Authenticated 
-				.Where(entity => entity.State is EntityState.Added or EntityState.Modified))
+            //var entries = dbContext.ChangeTracker.Entries<BaseAuditableEntity<int>>() // Must any Entity inherit from BaseAuditableEntity Be Authenticated But The Problem is key <int> , So we make IBaseAuditableEntity
+            var entries = dbContext.ChangeTracker.Entries<IBaseAuditableEntity>() // Must any Entity inherit from BaseAuditableEntity Be Authenticated 
+				.Where(entity => entity.State is EntityState.Added or EntityState.Modified);
+
+
+            foreach (var entry in entries)
 			{
 				if (entry.State is EntityState.Added)
 				{

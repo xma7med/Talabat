@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LinkDev.Talabat.APIs.Controllers.Controllers.Products
 {
-	public class ProductsController(IServiceManager serviceManger) : ApiControllerBase
+	public class ProductsController(IServiceManager serviceManger) : BaseApiController
 	{
 
 				  //[Authorize(AuthenticationSchemes = "Bearer")]

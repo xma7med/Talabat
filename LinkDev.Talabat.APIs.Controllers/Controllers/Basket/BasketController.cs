@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LinkDev.Talabat.APIs.Controllers.Controllers.Basket
 {
-	public class BasketController(IServiceManager serviceManager) : ApiControllerBase
+	public class BasketController(IServiceManager serviceManager) : BaseApiController
 	{
 		[HttpGet] // GET : /api/Basket?id=
 		public async Task<ActionResult<CustomerBasketDto>> GetBasket(string id)

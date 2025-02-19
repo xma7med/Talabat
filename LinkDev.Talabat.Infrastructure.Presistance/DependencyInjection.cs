@@ -3,7 +3,6 @@ using LinkDev.Talabat.Core.Domain.Contracts.Persistence.DbInitializers;
 using LinkDev.Talabat.Infrastructure.Presistance.Data;
 using LinkDev.Talabat.Infrastructure.Presistance.Identity;
 using LinkDev.Talabat.Infrastructure.Presistance.Interceptors;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,16 +14,20 @@ namespace LinkDev.Talabat.Infrastructure.Presistance
 		public static IServiceCollection AddPresistanceServices(this IServiceCollection services , IConfiguration configuration)
 		{
 			#region Store DbContext
-			services.AddDbContext<StoreDbContext>((optionBuilder) =>
+			services.AddDbContext<StoreDbContext>((serviceProvider, optionBuilder) =>
 				{
 					optionBuilder.UseLazyLoadingProxies()
-					.UseSqlServer(configuration.GetConnectionString("StoreContext"));
+					.UseSqlServer(configuration.GetConnectionString("StoreContext"))
+					.AddInterceptors(serviceProvider.GetRequiredService<AuditInterceptor>());
+
 				} /*, contextLifetime: ServiceLifetime.Scoped , optionsLifetime : ServiceLifetime.Scoped*/);
 
-			//services.AddScoped<IStoreDbIntializer, StoreDbInitializer>();
-			services.AddScoped(typeof(IStoreDbIntializer), typeof(StoreDbInitializer));
+			services.AddScoped(typeof(AuditInterceptor));
 
-			services.AddScoped(typeof(ISaveChangesInterceptor), typeof(BaseEntityAuditableInterceptor));
+            //services.AddScoped<IStoreDbIntializer, StoreDbInitializer>();
+            services.AddScoped(typeof(IStoreDbIntializer), typeof(StoreDbInitializer));
+
+			//services.AddScoped(typeof(ISaveChangesInterceptor), typeof(CustomSaveChangesInterceptor));
 
 			#endregion
 
