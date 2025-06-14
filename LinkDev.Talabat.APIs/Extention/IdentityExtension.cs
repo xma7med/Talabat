@@ -29,7 +29,7 @@ namespace LinkDev.Talabat.APIs.Extention
 				/// identityOptions.Password.RequireDigit = true;
 				/// identityOptions.Password.RequireLowercase = true;
 				/// identityOptions.Password.RequireUppercase = true;
-
+				
 				identityOptions.User.RequireUniqueEmail = true;
 				// identityOptions.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyz0123456789";
 				identityOptions.Lockout.AllowedForNewUsers = true;
@@ -66,26 +66,40 @@ namespace LinkDev.Talabat.APIs.Extention
 						ClockSkew=TimeSpan.Zero,// SomeTimes After expiration token dosent expire cause of diff Time Zone
                                                 // this make token expire at the time 
                     };
-					/// Add event handlers to log token validation issues
-					///options.Events = new JwtBearerEvents
-					///{
-					///	OnAuthenticationFailed = context =>
-					///	{
-					///		Console.WriteLine("Authentication failed:", context.Exception.Message);
-					///		return Task.CompletedTask;
-					///	},
-					///	OnTokenValidated = context =>
-					///	{
-					///		Console.WriteLine("Token validated successfully");
-					///		return Task.CompletedTask;
-					///	},
-					///	OnMessageReceived = context =>
-					///	{
-					///		Console.WriteLine("Token received: " + context.Token);
-					///		return Task.CompletedTask;
-					///	}
-					///};
-				})
+
+                    // 👇 Allow tokens without "Bearer " prefix
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnMessageReceived = context =>
+                        {
+                            var token = context.Request.Headers["Authorization"].FirstOrDefault();
+                            if (!string.IsNullOrEmpty(token) && !token.StartsWith("Bearer "))
+                            {
+                                context.Token = token; // use the raw token
+                            }
+                            return Task.CompletedTask;
+                        }
+                    };
+                    /// Add event handlers to log token validation issues
+                    ///options.Events = new JwtBearerEvents
+                    ///{
+                    ///	OnAuthenticationFailed = context =>
+                    ///	{
+                    ///		Console.WriteLine("Authentication failed:", context.Exception.Message);
+                    ///		return Task.CompletedTask;
+                    ///	},
+                    ///	OnTokenValidated = context =>
+                    ///	{
+                    ///		Console.WriteLine("Token validated successfully");
+                    ///		return Task.CompletedTask;
+                    ///	},
+                    ///	OnMessageReceived = context =>
+                    ///	{
+                    ///		Console.WriteLine("Token received: " + context.Token);
+                    ///		return Task.CompletedTask;
+                    ///	}
+                    ///};
+                })
 				/*.AddJwtBearer("Bearer02" , (opti) => )*/;
 			//-----------------------------------------
 			services.AddScoped(typeof(IAuthService) , typeof(AuthService));

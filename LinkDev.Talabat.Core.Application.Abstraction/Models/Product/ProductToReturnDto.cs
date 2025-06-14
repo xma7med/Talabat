@@ -14,5 +14,7 @@
 
         public int? CategoryId { get; set; } // Foriegn Key --> ProductCategory 
         public  /*ProductCategory*/string? Category { get; set; }
+
+        //public bool? IsFavorit  { get; set; }
     }
 }
