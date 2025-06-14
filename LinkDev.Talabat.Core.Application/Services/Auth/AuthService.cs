@@ -27,8 +27,9 @@ namespace LinkDev.Talabat.Core.Application.Services.Auth
 
         public async Task<UserDto> CurrentUser(ClaimsPrincipal claimsPrincipal)
         {
-            var email = claimsPrincipal.FindFirstValue(ClaimTypes.Email);
-            var user = await userManager.FindByEmailAsync(email!);
+			//var email = claimsPrincipal.FindFirstValue(c => c.Type == ClaimTypes.Email || c.Type.Contains("email"))?.Value;
+			var email = claimsPrincipal.FindFirstValue(ClaimTypes.Email);
+			var user = await userManager.FindByEmailAsync(email!);
             return new UserDto()
             {
                 Id = user!.Id,
@@ -105,7 +106,9 @@ namespace LinkDev.Talabat.Core.Application.Services.Auth
 				Email = model.Email,
 				UserName = model.UserName,
 				PhoneNumber = model.Phone,
-			};
+                EmailConfirmed = true,
+				PhoneNumberConfirmed=true 
+            };
 			// to use hashing to the password  in user manager 
 			var result = await userManager.CreateAsync(user , model.Password);
 
@@ -164,5 +167,8 @@ namespace LinkDev.Talabat.Core.Application.Services.Auth
 			// Generate / Create  Token 
 			return new JwtSecurityTokenHandler().WriteToken(tokenObj);
 		}
+
+
+
 	}
 }

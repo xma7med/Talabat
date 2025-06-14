@@ -1,4 +1,4 @@
-using LinkDev.Talabat.APIs.Controllers.Controllers.Errors;
+﻿using LinkDev.Talabat.APIs.Controllers.Controllers.Errors;
 using LinkDev.Talabat.APIs.Extention;
 using LinkDev.Talabat.APIs.Middlewares;
 using LinkDev.Talabat.APIs.Services;
@@ -6,7 +6,9 @@ using LinkDev.Talabat.Core.Application;
 using LinkDev.Talabat.Core.Application.Abstraction;
 using LinkDev.Talabat.Infrastructure;
 using LinkDev.Talabat.Infrastructure.Presistance;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi.Models;
 
 namespace LinkDev.Talabat.APIs
 {
@@ -66,9 +68,40 @@ namespace LinkDev.Talabat.APIs
 
 			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 			webApplicationbuilder.Services.AddEndpointsApiExplorer();
-			webApplicationbuilder.Services.AddSwaggerGen();
+			webApplicationbuilder.Services.AddSwaggerGen(c =>
+            {
+                //c.SwaggerDoc("v1", new OpenApiInfo { Title = "Your API", Version = "v1" });
 
-			webApplicationbuilder.Services.AddHttpContextAccessor(); // Register All required services for 	HttpContextAccessor Not Only HttpContextAccessor
+                // 👇 Add JWT Authentication to Swagger
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\"",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+				 {
+				     {
+				         new OpenApiSecurityScheme
+				         {
+				             Reference = new OpenApiReference
+				             {
+				                 Type=ReferenceType.SecurityScheme,
+				                 Id="Bearer"
+				             },
+				             Scheme=JwtBearerDefaults.AuthenticationScheme,
+				             Name="Bearer",
+				             In=ParameterLocation.Header
+				         },
+				         new List<string>()
+				     }
+				 });
+            });
+
+            webApplicationbuilder.Services.AddHttpContextAccessor(); // Register All required services for 	HttpContextAccessor Not Only HttpContextAccessor
 			webApplicationbuilder.Services.AddScoped(typeof(ILoggedInUserService) , typeof(LoggedInUserService));
 
 

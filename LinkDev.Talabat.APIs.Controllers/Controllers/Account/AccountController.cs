@@ -3,11 +3,12 @@ using LinkDev.Talabat.Core.Application.Abstraction;
 using LinkDev.Talabat.Core.Application.Abstraction.Models.Auth;
 using LinkDev.Talabat.Core.Application.Abstraction.Models.Common;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LinkDev.Talabat.APIs.Controllers.Controllers.Account
 {
-    public class AccountController(IServiceManager serviceManager ) : BaseApiController
+    public class AccountController(IServiceManager serviceManager , IHttpContextAccessor httpContext ) : BaseApiController
 	{
 		[HttpPost("login")] // POST : /api/account/login
 		public async Task<ActionResult<UserDto>> Login(LoginDto model)
@@ -23,10 +24,13 @@ namespace LinkDev.Talabat.APIs.Controllers.Controllers.Account
 			return Ok(response);
 		}
 
-        [Authorize]
-        [HttpGet] // GET : /api/account
+		[Authorize]
+		[HttpGet] // GET : /api/account
         public async Task<ActionResult<UserDto>> GetCurrentUser()
         {
+			var v = httpContext.HttpContext.Connection;
+			//var t2 = httpContext.HttpContext.Session;
+
             var Result = await serviceManager.AuthService.CurrentUser(User);
             return Ok(Result);
         }
@@ -36,7 +40,9 @@ namespace LinkDev.Talabat.APIs.Controllers.Controllers.Account
 		public async Task<ActionResult<AddressDto>> GetUserAddress()
 		{ 
 			var result = await serviceManager.AuthService.GetUserAddressAsync(User);
-			return Ok(result);	
+			if (result != null)
+				return Ok(result);
+			return NotFound(result);
 		}
 
 		[Authorize]
