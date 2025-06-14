@@ -1,4 +1,4 @@
-﻿using LinkDev.Talabat.Core.Domain.Entities.Employees;
+﻿using LinkDev.Talabat.Core.Domain.Entities.Employee;
 
 namespace LinkDev.Talabat.Core.Domain.Specifications.Employees
 {

@@ -8,6 +8,24 @@ namespace LinkDev.Talabat.APIs.Controllers.Employee
 {
     public class EmployeeController(IServiceManager serviceManager) : BaseApiController
     {
+
+
+
+        [HttpPost("AddEmployee")]
+        public async Task<ActionResult<EmployeeDto>> AddEmployee(EmployeeDto employeeDto)
+        {
+            var res = await serviceManager.EmployeeService.AddEmployee(employeeDto);
+            return Ok(res);
+        }
+
+
+        [HttpPost("GetById")]
+        public async Task<ActionResult<EmployeeDto>> GetEmployeeById(int id)
+        {
+            var res = await serviceManager.EmployeeService.GetEmployeeById(id);
+            return Ok(res);
+        } 
+
         [HttpGet("GetAllEmployees")]
         public async Task<ActionResult<IEnumerable<EmployeeDto>>> GetAllEmployees()
         {
@@ -15,21 +33,12 @@ namespace LinkDev.Talabat.APIs.Controllers.Employee
             return Ok(res);
         }
 
-        [HttpPost("GetById")]
-        public async Task<ActionResult<EmployeeDto> >GetEmployeeById(int id )
+        [HttpPost("Update")]
+        public async Task<ActionResult<EmployeeDto>> Update(EmployeeDto employee)
         {
-            var res = await serviceManager.EmployeeService.GetEmployeeById(id);
+            var res = await serviceManager.EmployeeService.UpdateEmployee(employee);
             return Ok(res);
         }
-
-
-        [HttpPost("AddEmployee")]
-        public async Task<ActionResult<EmployeeDto>> AddEmployee(EmployeeDto employeeDto) 
-        {
-            var res = await serviceManager.EmployeeService.AddEmployee(employeeDto);
-            return Ok(res);
-        }
-
 
         [HttpGet("Delete_Employee")]
         public async Task<ActionResult<EmployeeDto>> DeleteEmployeee(int id)
