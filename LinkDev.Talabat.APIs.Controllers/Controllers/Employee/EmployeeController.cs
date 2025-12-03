@@ -30,6 +30,13 @@ namespace LinkDev.Talabat.APIs.Controllers.Employee
             return Ok(res);
         }
 
+        [HttpPost("UpdateEmployee")]
+        public async Task<ActionResult<EmployeeDto>> UpdateEmployee(EmployeeDto employeeDto)
+        {
+            var res = await serviceManager.EmployeeService.UpdateEmployee(employeeDto);
+            return Ok(res);
+        }
+
 
         [HttpGet("Delete_Employee")]
         public async Task<ActionResult<EmployeeDto>> DeleteEmployeee(int id)

@@ -1,18 +1,17 @@
 ﻿using AutoMapper;
 using LinkDev.Talabat.Core.Application.Abstraction.Models.Basket;
 using LinkDev.Talabat.Core.Application.Abstraction.Models.Common;
+using LinkDev.Talabat.Core.Application.Abstraction.Models.Department;
 using LinkDev.Talabat.Core.Application.Abstraction.Models.Employee;
 using LinkDev.Talabat.Core.Application.Abstraction.Models.Order;
 using LinkDev.Talabat.Core.Application.Abstraction.Models.Product;
 using LinkDev.Talabat.Core.Domain.Entities.Basket;
-using LinkDev.Talabat.Core.Domain.Entities.Employees;
-using LinkDev.Talabat.Core.Domain.Entities.Products;
-using LinkDev.Talabat.Core.Domain.Entities.Identity;
+using LinkDev.Talabat.Core.Domain.Entities.Employee;
 using LinkDev.Talabat.Core.Domain.Entities.Orders;
+using LinkDev.Talabat.Core.Domain.Entities.Products;
+using OrderAddress = LinkDev.Talabat.Core.Domain.Entities.Orders.Address;
 // Alias Name 
 using UserAddress = LinkDev.Talabat.Core.Domain.Entities.Identity.Address;
-using OrderAddress = LinkDev.Talabat.Core.Domain.Entities.Orders.Address;
-using LinkDev.Talabat.Core.Application.Abstraction.Models.Department;
 
 namespace LinkDev.Talabat.Core.Application.Mapping
 {
@@ -35,7 +34,10 @@ namespace LinkDev.Talabat.Core.Application.Mapping
 			CreateMap<Employee, EmployeeToReturnDto>();
 
             CreateMap<Employee, EmployeeDto>()
-                .ForMember(dest => dest.DepartmentName, opt => opt.MapFrom(src => src.Department.Name)).ReverseMap();
+                .ForMember(dest => dest.DepartmentName, opt => opt.MapFrom(src => src.Department.Name));
+            CreateMap<EmployeeDto, Employee>()
+                .ForMember(dest => dest.Department, opt => opt.Ignore()); // important
+
 
             CreateMap<Department, DepartmentDto>().ReverseMap();
             CreateMap<Department, DepartmentCreateDto>().ReverseMap();

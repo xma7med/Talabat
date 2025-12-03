@@ -27,14 +27,22 @@ namespace LinkDev.Talabat.Core.Application.Services.Employees
 
         {
             var entity = mapper.Map<Employee>(employeeDto);
-             await unitOfWork.GetRepository<Employee, int>().AddAsync(entity);
+            await unitOfWork.GetRepository<Employee, int>().AddAsync(entity);
+            await unitOfWork.CompleteAsync();
             return employeeDto;
 
         }
         public async Task<EmployeeDto> UpdateEmployee(EmployeeDto employeeDto)
         {
             var entity = mapper.Map<Employee>(employeeDto);
+            var spec = new EmployeeWithDepartmentSpecifications(employeeDto.Id) as ISpecifications<Employee, int>;
+            var emp = await unitOfWork.GetRepository<Employee, int>().GetWithSpecAsync(spec);
+            entity.CreatedOn = emp.CreatedOn;
+            entity.CreatedBy = emp.CreatedBy;   
+
             unitOfWork.GetRepository<Employee, int>().Update(entity);
+            await unitOfWork.CompleteAsync();
+
             return employeeDto;
 
         }
@@ -45,6 +53,7 @@ namespace LinkDev.Talabat.Core.Application.Services.Employees
             var obj = await unitOfWork.GetRepository<Employee, int>().GetWithSpecAsync(spec);
             var employeeDto = mapper.Map<EmployeeDto>(obj);
              unitOfWork.GetRepository<Employee, int>().Delete(obj);
+            await unitOfWork.CompleteAsync();
             return employeeDto;
 
         }

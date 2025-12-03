@@ -118,8 +118,8 @@ namespace LinkDev.Talabat.Core.Application.Services.Departments
                 //var isUpdated =  unitOfWork.CompeleteAsync();
 
                 if (unitOfWork.CompleteAsync() is not null)
-                    return new ResponseDto { IsSuccess = false, Result = null, Message = "Not UPDATED " };
                 return new ResponseDto { IsSuccess = true, Result = model, Message = "Success" };
+                    return new ResponseDto { IsSuccess = false, Result = null, Message = "Not UPDATED " };
 
 
                    }

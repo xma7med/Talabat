@@ -55,10 +55,10 @@ namespace LinkDev.Talabat.Infrastructure.Presistance.Interceptors
 			{
 				if (entry.State is EntityState.Added)
 				{
-					entry.Entity.CreatedBy = _loggedInUserService.UserId!;
+					entry.Entity.CreatedBy = _loggedInUserService.UserId!??"no user man ";
 					entry.Entity.CreatedOn = DateTime.UtcNow;
 				}
-				entry.Entity.LastModifiedBy = _loggedInUserService.UserId!;
+				entry.Entity.LastModifiedBy = _loggedInUserService.UserId!??"no user man";
 				entry.Entity.LastModifiedOn = DateTime.UtcNow;
 			}
 		}
