@@ -19,8 +19,13 @@
 
         public DateTime? CreatedOn { get; set; } = DateTime.UtcNow;
 
+<<<<<<< HEAD
+		public string LastModifiedBy { get; set; } = null!;
+        public  DateTime LastModifiedOn { get; set; } = DateTime.UtcNow;
+=======
 		public string?  LastModifiedBy { get; set; } = null!;
         public  DateTime? LastModifiedOn { get; set; } = DateTime.UtcNow;
+>>>>>>> a293d03e47a7174e40cf74780d571906eeef1c87
 
 	}
 }

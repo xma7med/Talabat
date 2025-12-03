@@ -1,18 +1,28 @@
 ﻿using AutoMapper;
 using LinkDev.Talabat.Core.Application.Abstraction.Models.Basket;
 using LinkDev.Talabat.Core.Application.Abstraction.Models.Common;
+using LinkDev.Talabat.Core.Application.Abstraction.Models.Department;
 using LinkDev.Talabat.Core.Application.Abstraction.Models.Employee;
 using LinkDev.Talabat.Core.Application.Abstraction.Models.Order;
 using LinkDev.Talabat.Core.Application.Abstraction.Models.Product;
 using LinkDev.Talabat.Core.Domain.Entities.Basket;
+<<<<<<< HEAD
+using LinkDev.Talabat.Core.Domain.Entities.Employee;
+=======
 using LinkDev.Talabat.Core.Domain.Entities.Products;
 using LinkDev.Talabat.Core.Domain.Entities.Identity;
+>>>>>>> a293d03e47a7174e40cf74780d571906eeef1c87
 using LinkDev.Talabat.Core.Domain.Entities.Orders;
+using LinkDev.Talabat.Core.Domain.Entities.Products;
+using OrderAddress = LinkDev.Talabat.Core.Domain.Entities.Orders.Address;
 // Alias Name 
 using UserAddress = LinkDev.Talabat.Core.Domain.Entities.Identity.Address;
+<<<<<<< HEAD
+=======
 using OrderAddress = LinkDev.Talabat.Core.Domain.Entities.Orders.Address;
 using LinkDev.Talabat.Core.Application.Abstraction.Models.Department;
 using LinkDev.Talabat.Core.Domain.Entities.Employee;
+>>>>>>> a293d03e47a7174e40cf74780d571906eeef1c87
 
 namespace LinkDev.Talabat.Core.Application.Mapping
 {
@@ -35,9 +45,16 @@ namespace LinkDev.Talabat.Core.Application.Mapping
 			CreateMap<Employee, EmployeeToReturnDto>();
 
             CreateMap<Employee, EmployeeDto>()
+<<<<<<< HEAD
+                .ForMember(dest => dest.DepartmentName, opt => opt.MapFrom(src => src.Department.Name));
+            CreateMap<EmployeeDto, Employee>()
+                .ForMember(dest => dest.Department, opt => opt.Ignore()); // important
+
+=======
                 .ForMember(dest => dest.DepartmentName, opt => opt.MapFrom(src => src.Department.Name!=null ? src.Department.Name: "N/A"))
                 .ForMember(dest => dest.DepartmentId, opt => opt.MapFrom(src => src.DepartmentId))
                 .ReverseMap();
+>>>>>>> a293d03e47a7174e40cf74780d571906eeef1c87
 
             CreateMap<Department, DepartmentDto>().ReverseMap();
             //CreateMap<Department, DepartmentCreateDto>()

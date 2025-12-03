@@ -12,6 +12,8 @@
         public int? Age { get; set; }
         public decimal Salary { get; set; }
         public int? DepartmentId { get; set; }
+        // This is a navigation property to the Department entity
+
         public virtual Department? Department { get; set; }
     }
 }

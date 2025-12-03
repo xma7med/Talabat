@@ -137,9 +137,12 @@ namespace LinkDev.Talabat.Core.Application.Services.Auth
 
             var claims = new List<Claim>()
 			{ 
+                new Claim (ClaimTypes.NameIdentifier, user.Id),
 				new Claim (ClaimTypes.PrimarySid, user.Id), // The claim that i used in Interceptor 
 				new Claim (ClaimTypes.Email, user.Email!),
 				new Claim (ClaimTypes.GivenName, user.DisplayName),
+				//new Claim ("UserId", user.DisplayName),
+
 				//new Claim ("MyKey", user.DisplayName),// Private claim
 
 			}.Union (await userManager.GetClaimsAsync(user)).ToList(); //User Claims 

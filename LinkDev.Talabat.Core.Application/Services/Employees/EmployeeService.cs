@@ -48,6 +48,12 @@ namespace LinkDev.Talabat.Core.Application.Services.Employees
         public async Task<ResponseDto> AddEmployee(EmployeeDto employeeDto)
 
         {
+//<<<<<<< HEAD
+//            var entity = mapper.Map<Employee>(employeeDto);
+//            await unitOfWork.GetRepository<Employee, int>().AddAsync(entity);
+//            await unitOfWork.CompleteAsync();
+//            return employeeDto;
+//=======
             try
             {
                 var entity = mapper.Map<Employee>(employeeDto);
@@ -66,42 +72,70 @@ namespace LinkDev.Talabat.Core.Application.Services.Employees
                 return new ResponseDto { IsSuccess = false, Result = null, Message = ex.Message };
 
             }
+//>>>>>>> a293d03e47a7174e40cf74780d571906eeef1c87
 
         }
         public async Task<ResponseDto> UpdateEmployee(EmployeeDto employeeDto)
         {
-            try
-            {
-                var oldemp = await unitOfWork.GetRepository<Employee, int>().GetAsync(employeeDto.Id);
-                //var entity = mapper.Map<Employee>(employeeDto);
-                //unitOfWork.GetRepository<Employee, int>().Update(entity);
-                if (oldemp == null)
-                    return new ResponseDto { IsSuccess = true, Result = employeeDto, Message = $"Not fount with Id = {employeeDto.Id}" };
+//<<<<<<< HEAD
+            var entity = mapper.Map<Employee>(employeeDto);
+            var spec = new EmployeeWithDepartmentSpecifications(employeeDto.Id) as ISpecifications<Employee, int>;
+            var emp = await unitOfWork.GetRepository<Employee, int>().GetWithSpecAsync(spec);
+            entity.CreatedOn = emp.CreatedOn;
+            entity.CreatedBy = emp.CreatedBy;   
 
-                oldemp.Name = employeeDto.Name?? oldemp.Name;
-                oldemp.DepartmentId = employeeDto.DepartmentId?? oldemp.DepartmentId;
-                oldemp.Age = employeeDto.Age?? oldemp.Age;
-                //oldemp.Name = employeeDto.Name?? oldemp.Name;
-                unitOfWork.GetRepository<Employee, int>().Update(oldemp);
-
-                var add = await unitOfWork.CompleteAsync();
-                if (add > 0)
-                    return new ResponseDto { IsSuccess = true, Result = employeeDto, Message = "Success" };
-                return new ResponseDto { IsSuccess = false, Result = null, Message = "Not Added " };
+            unitOfWork.GetRepository<Employee, int>().Update(entity);
+            await unitOfWork.CompleteAsync();
+            if (unitOfWork.CompleteAsync() is not null)
+                return new ResponseDto { IsSuccess = true, Result = employeeDto, Message = "Success" };
+            return new ResponseDto { IsSuccess = false, Result = null, Message = "Not UPDATED " };
 
 
-            }
-            catch (System.Exception ex )
-            {
+            //return employeeDto;
+//=======
+#region Old 
+		            //try
+            //{
+            //    var oldemp = await unitOfWork.GetRepository<Employee, int>().GetAsync(employeeDto.Id);
+            //    //var entity = mapper.Map<Employee>(employeeDto);
+            //    //unitOfWork.GetRepository<Employee, int>().Update(entity);
+            //    if (oldemp == null)
+            //        return new ResponseDto { IsSuccess = true, Result = employeeDto, Message = $"Not fount with Id = {employeeDto.Id}" };
 
-                return new ResponseDto { IsSuccess = false, Result = null, Message = ex.Message };
+            //    oldemp.Name = employeeDto.Name?? oldemp.Name;
+            //    oldemp.DepartmentId = employeeDto.DepartmentId?? oldemp.DepartmentId;
+            //    oldemp.Age = employeeDto.Age?? oldemp.Age;
+            //    //oldemp.Name = employeeDto.Name?? oldemp.Name;
+            //    unitOfWork.GetRepository<Employee, int>().Update(oldemp);
 
-            }
+            //    var add = await unitOfWork.CompleteAsync();
+            //    if (add > 0)
+            //        return new ResponseDto { IsSuccess = true, Result = employeeDto, Message = "Success" };
+            //    return new ResponseDto { IsSuccess = false, Result = null, Message = "Not Added " };
+
+
+            //}
+            //catch (System.Exception ex )
+            //{
+
+            //    return new ResponseDto { IsSuccess = false, Result = null, Message = ex.Message };
+
+            //} 
+	#endregion
+//>>>>>>> a293d03e47a7174e40cf74780d571906eeef1c87
 
         }
 
         public async  Task<ResponseDto> DeleteEmployee(int id)
         {
+//<<<<<<< HEAD
+//            var spec = new EmployeeWithDepartmentSpecifications(id) as ISpecifications<Employee, int>;
+//            var obj = await unitOfWork.GetRepository<Employee, int>().GetWithSpecAsync(spec);
+//            var employeeDto = mapper.Map<EmployeeDto>(obj);
+//             unitOfWork.GetRepository<Employee, int>().Delete(obj);
+//            await unitOfWork.CompleteAsync();
+//            return employeeDto;
+//=======
             try
             {
                 var spec = new EmployeeWithDepartmentSpecifications(id) as ISpecifications<Employee, int>;
@@ -120,6 +154,7 @@ namespace LinkDev.Talabat.Core.Application.Services.Employees
                 return new ResponseDto { IsSuccess = false, Result = null, Message = ex.Message };
 
             }
+//>>>>>>> a293d03e47a7174e40cf74780d571906eeef1c87
 
         }
 
