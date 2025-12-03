@@ -10,20 +10,20 @@ namespace LinkDev.Talabat.Infrastructure.Presistance.Data.Config.Base
 		{
 			base.Configure(builder);
 
-			builder.Property(E => E.CreatedBy)
-				.IsRequired();
+			//builder.Property(E => E.CreatedBy)
+			//	.IsRequired();
 
-			builder.Property(E => E.CreatedOn)
-				.IsRequired();
-			//.HasDefaultValue("GETUTCDATE()"); // i will use inspector 
+			//builder.Property(E => E.CreatedOn)
+			//	.IsRequired();
+			////.HasDefaultValue("GETUTCDATE()"); // i will use inspector 
 
 
-			builder.Property(E => E.LastModifiedBy)
-				.IsRequired();
+			//builder.Property(E => E.LastModifiedBy)
+			//	.IsRequired();
 
-			builder.Property(E => E.LastModifiedOn)
-				.IsRequired();
-			//.HasDefaultValue("GETUTCDATE()"); // i will use inspector 
+			//builder.Property(E => E.LastModifiedOn)
+			//	.IsRequired();
+			////.HasDefaultValue("GETUTCDATE()"); // i will use inspector 
 		}
 	}
 }
