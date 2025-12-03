@@ -1,0 +1,47 @@
+﻿@model UserRoleViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit @Model.UserName</h1>
+<hr />
+<div class="container">
+    <form method="post" asp-action="Edit">
+        <input asp-for="UserId" class="form-control" hidden />
+        <div class="form-group">
+            <label asp-for="UserName" class="col-form-label"></label>
+            <input asp-for="UserName" class="form-control" disabled />
+        </div>
+
+        <h3>Manage user roles</h3>
+        <hr />
+
+        @for (int i = 0; i < Model.Roles.Count; i++)
+        {
+            <div class="form-check">
+                <!-- Hidden input for role name -->
+                <input asp-for="@Model.Roles[i].Name" type="hidden" />
+
+                <!-- Checkbox for selecting/deselecting the role -->
+                <input asp-for="@Model.Roles[i].IsSelected" class="form-check-input" />
+
+                <!-- Label for the checkbox with the role name -->
+                <label asp-for="@Model.Roles[i]" class="form-check-label">@Model.Roles[i].Name</label>
+
+                <!-- Validation message for the role -->
+                <span asp-validation-for="Roles" class="text-danger"></span>
+            </div>
+        }
+
+        <br />
+
+        <!-- Submit button to save the form -->
+        <input type="submit" value="Save" class="btn btn-success" />
+
+        <!-- Link to return to the index page -->
+        <a asp-action="Index" class="btn btn-primary">Back to index</a>
+
+       
+    </form>
+</div>
