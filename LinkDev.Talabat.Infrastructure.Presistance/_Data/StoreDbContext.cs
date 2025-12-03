@@ -56,6 +56,7 @@ namespace LinkDev.Talabat.Infrastructure.Presistance.Data
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<DeliveryMethod> DeliveryMethods { get; set; }
         public DbSet<Employee> Employees { get; set; }
+        public DbSet<Department> Department { get; set; }
 
 
     }

@@ -59,7 +59,11 @@ namespace LinkDev.Talabat.Infrastructure.Presistance.Reositories.Generic_Reposit
 			///						  .Include(P => P.Brand)
 			///						  .Include(P => P.Category).FirstOrDefaultAsync() as TEntity;
 			/// For other entities, just use FindAsync (no eager loading)
-			return await _dbContext.Set<TEntity>().FindAsync(id);
+
+			var md = _dbContext.Set<TEntity>();
+
+
+            return await md .FindAsync(id);
 
 
 		}
